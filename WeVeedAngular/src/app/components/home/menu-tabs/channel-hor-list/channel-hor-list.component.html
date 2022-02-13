@@ -1,0 +1,41 @@
+<div>
+  <div class="series-wrapper">
+    <div (click)="goToSeeAllChannelEpisodes()" class="channel-top-zone" style="display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center;">
+
+        <fa-icon style="color: #2ca5d5; font-size: 28px;" 
+          [class.font25imp]="channelConfig.name =='general' || channelConfig.name =='travel'" 
+          [icon]="[channelConfig.iconType, channelConfig.iconName]"></fa-icon>
+
+        <div style="margin-left: 12px;">
+          <div style="font-size: 17px;">
+            {{channelConfig.capitalRoName}}
+          </div>
+          <div style="margin-top: -3px;">
+            <span style="color: #2da8da;">Vezi toate episoadele</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div (click)="playChannel()" class="play-channel-btn-wrapper">
+        <div class="play-channel-btn" style="display: flex; align-items: center;">
+          <fa-icon style="font-size: 10px;" [icon]="['fas', 'play']"></fa-icon>
+          <span style="margin-left: 6px;">Redă Canal</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="height: 10px;"></div>
+
+    <app-images-slider *ngIf="!isChannelVideosLoading && sliderVideosInfo && sliderVideosInfo.elements && sliderVideosInfo.elements.length" 
+        [sliderInfo]="sliderVideosInfo"></app-images-slider>
+
+    <app-loading-blocks-slider *ngIf="isChannelVideosLoading"></app-loading-blocks-slider>
+
+    <div style="height: 10px;"></div>
+  </div>
+
+  <div style="border-bottom: 1px solid #464646;"></div>
+  <div style="height: 10px;"></div>
+</div>

@@ -1,0 +1,142 @@
+
+<mat-tab-group mat-stretch-tabs [selectedIndex]="1">
+  <mat-tab label="Informatii Personale">
+      <div class="padding-24-60" *ngIf="isInUserEditMode">
+        <div *ngIf="userProfileImageEditableIsDisplayed" class="text-center position-relative">
+          <img class="profile-img" *ngIf="!userProfileImageUrl" src="assets/nouserimage.png">
+          <img class="profile-img" *ngIf="userProfileImageUrl" [src]="userProfileImageUrl">
+          <label for="userImageUploader" class="pic-change-wrapper">
+            <fa-icon class="font-size-25 transition-1s" [icon]="['fas', 'camera']"></fa-icon>
+          </label>
+        </div>
+
+        <input #imageInputUser class="display-none" id="userImageUploader" 
+          type="file" accept="image/png, image/jpeg" (change)="fileChangeEvent($event)" />
+        <div *ngIf="!userProfileImageEditableIsDisplayed" class="image-cropper-wrapper cropper-update-user">
+          <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="1 / 1"
+              [resizeToWidth]="100"
+              format="png"
+              (imageCroppedBase64)="imageCropped($event)"
+              (imageLoaded)="imageLoaded()"
+              (loadImageFailed)="loadImageFailed()"
+          ></image-cropper>
+          <div class="display-none">
+            <img class="cropper-image" [src]="croppedImage" />
+          </div>
+        </div>
+        <div *ngIf="!userProfileImageEditableIsDisplayed" class="helper-grey-text text-center">
+          <div>Ajusteaza imaginea si salveaza informatiile</div>
+        </div>
+
+        <div style="height: 20px;"></div>
+        <form [formGroup]="userInfoForm" autocomplete="off" (keydown)="keyDownFunctionOnForm($event)">
+          <mat-form-field class="split-form-control">
+            <input matInput placeholder="Prenume" [formControl]="firstName" autofocus >
+            <mat-error *ngIf="firstName.hasError('required')">
+              Prenumele este <strong>obligatoriu</strong>
+            </mat-error>
+            <mat-error *ngIf="firstName.hasError('maxlength')">
+              Maxim <strong>50 de caractere</strong> acceptate
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="split-form-control float-right">
+            <input matInput placeholder="Nume" [formControl]="lastName">
+            <mat-error *ngIf="lastName.hasError('required')">
+              Numele este <strong>obligatoriu</strong>
+            </mat-error>
+            <mat-error *ngIf="lastName.hasError('maxlength')">
+              Maxim <strong>50 de caractere</strong> acceptate
+            </mat-error>
+          </mat-form-field>
+        </form>
+        <div class="flex-space-between">
+          <div class="flex-1">
+            <button (click)="cancelUserChange()" mat-button class="cancel-btn float-right">Renunta</button>
+          </div>
+          <div class="flex-1 text-center">
+            <button class="style-ladda" [ladda]="isUserFormSubmitting" (click)="submitUserInfoForm()" mat-button>Salveaza</button>
+          </div>
+          <div class="flex-1"></div>
+        </div>
+      </div>
+
+      <div class="profile-not-edit-wrapper" *ngIf="!isInUserEditMode">
+
+        <div>
+          <img class="profile-img" *ngIf="!userProfileImageUrl" src="assets/nouserimage.png">
+          <img class="profile-img" *ngIf="userProfileImageUrl" [src]="userProfileImageUrl">
+        </div>
+        <div class="profile-name-text">
+          {{userBasicInfo.firstName}} {{userBasicInfo.lastName}}
+        </div>
+        <div class="margin-top-10">
+            <button (click)="changeUserProfile()" mat-button>Modifica</button>
+        </div>
+  
+        <hr class="app-hr" />
+        <div *ngIf="!isUserBecomeProducerFormVisible">
+          Produci continut video de calitate? <a href="javascript:void(0)" (click)="openBecomeProducerForm()">Devino producator</a>
+        </div>
+        <div *ngIf="isUserBecomeProducerFormVisible">
+          <div class="padding-0-60">
+            <div class="darkgrey-color">
+              Completeaza informatiile pentru a deveni Producator
+            </div>
+            <div style="height: 10px;"></div>
+            <form [formGroup]="becomeProducerForm" autocomplete="off">
+              <mat-form-field>
+                <input matInput placeholder="Nume de producator" [formControl]="producerName" autofocus >
+                <mat-error *ngIf="producerName.hasError('required')">
+                  Numele de producator este <strong>obligatoriu</strong>
+                </mat-error>
+                <mat-error *ngIf="producerName.hasError('maxlength')">
+                  Maxim <strong>50 de caractere</strong> acceptate
+                </mat-error>
+                <mat-error *ngIf="producerName.hasError('isProducerNameUnique')">
+                  Numele de producator este deja utilizat
+                </mat-error>
+                <mat-spinner *ngIf="isProducerNameUniqueRequestLoading" class="field-loading-spinner">
+                </mat-spinner>
+                <fa-icon class="check-field-icon" [icon]="['fas', 'check-circle']"
+                  *ngIf="!producerName.hasError('required') && !producerName.hasError('maxlength') && !producerName.hasError('isProducerNameUnique') && !isProducerNameUniqueRequestLoading" [@fadeInOut] >
+                </fa-icon>
+              </mat-form-field>
+      
+              <mat-form-field>
+                <perfect-scrollbar [config]="config">
+                  <textarea matTextareaAutosize matInput class="no-scrollbar prevent-enter-submit min-height-50 max-height-105" 
+                    placeholder="Descriere producator" [formControl]="producerDescription"></textarea>
+                </perfect-scrollbar>
+                <mat-error *ngIf="producerDescription.hasError('required')">
+                  Descrierea producatorului este <strong>obligatorie</strong>
+                </mat-error>
+                <mat-error *ngIf="producerDescription.hasError('maxlength')">
+                  Maxim <strong>500 de caractere</strong> acceptate
+                </mat-error>
+              </mat-form-field>
+            </form>
+            <div class="flex-space-between">
+              <div class="flex-1">
+                <button (click)="cancelBecomeProducer()" mat-button class="cancel-btn float-right">Renunta</button>
+              </div>
+              <div class="flex-1 text-center">
+                <button class="style-ladda" [ladda]="isBecomeProducerFormSubmitting" (click)="submitBecomeProducerForm()" mat-button>Devino producator</button>
+              </div>
+              <div class="flex-1"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+  </mat-tab>
+  <mat-tab label="Emisiuni urmarite">
+    <div style="padding: 10px 24px 24px 24px;">
+      <app-my-followings></app-my-followings>
+    </div>
+  </mat-tab>
+</mat-tab-group>

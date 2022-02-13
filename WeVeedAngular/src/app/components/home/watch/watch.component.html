@@ -1,0 +1,13 @@
+<div id="mainWrapper" class="wrapper" [ngClass]="{'small-screen-wrapper': !isVideoLargeScreen, 'large-screen-wrapper': isVideoLargeScreen}">
+  <div class="video-controls">
+    <!-- <div class="right-menu-controls">
+      <fa-icon *ngIf="!isVideoLargeScreen" class="video-controls-icon icon-large-size icon-white" [icon]="['fas', 'angle-right']" (click)="handleToggleOnMenuBtn()"></fa-icon>
+      <fa-icon *ngIf="isVideoLargeScreen" class="video-controls-icon icon-large-size icon-white" [icon]="['fas', 'angle-left']" (click)="handleToggleOnMenuBtn()"></fa-icon>
+    </div> -->
+  </div>
+
+  <app-video *ngIf="contentIsVideo"></app-video>
+  <app-channel *ngIf="contentIsChannel"></app-channel>
+  <app-my-channel *ngIf="contentIsMyChannel"></app-my-channel>
+  <!-- <app-channel [channelName]="playNowItem" *ngIf="contentIsChannel"></app-channel> -->
+</div>

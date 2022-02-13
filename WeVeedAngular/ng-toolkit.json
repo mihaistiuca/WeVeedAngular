@@ -1,0 +1,18 @@
+{
+  "universal": {
+    "skipInstall": false,
+    "directory": ".",
+    "http": true,
+    "project": "weveed-ui"
+  },
+  "serverless": {
+    "provider": "aws",
+    "skipInstall": false,
+    "directory": ".",
+    "project": "weveed-ui",
+    "serverless": {
+      "aws": {},
+      "gcloud": {}
+    }
+  }
+}

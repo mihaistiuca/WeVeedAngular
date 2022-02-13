@@ -1,0 +1,86 @@
+
+<div class="display-flex" [class.next-vid-wrapper]="IsNextElement" (click)="playVideo(MainElementInfo.id)">
+    <div class="play-now-main-video-wrapper" [class.is-main]="!IsNextElement">
+        <div class="inner">
+            <img *ngIf="MainElementInfo.thumbnailUrl" class="main-video-image video-border-radius slider-video-contur" 
+                [src]="MainElementInfo.thumbnailUrl"
+                [class.is-main]="!IsNextElement">
+            <img *ngIf="!MainElementInfo.thumbnailUrl" class="main-video-image video-border-radius slider-video-contur" 
+                src="assets/noimgseries.jpeg"
+                [class.is-main]="!IsNextElement">
+
+            <div class="app-chip paginator slider-element-chip position-slider-duration-paginator">
+                {{MainElementInfo.length | wvdduration }}
+            </div>
+            <img src="assets/play.png" class="hover-zoom play-video-icon not-selectable for-play-single">
+        </div>
+    </div>
+
+    <div class="main-video-right-info" [class.is-main]="!IsNextElement">
+        <div class="main-video-series-title" style="display: flex; align-items: center;">
+
+            <a *ngIf="!IsNextElement" href="javascript:void(0)" (click)="goToSeries(MainElementInfo.seriesId)">
+                {{MainElementInfo.seriesName}}
+            </a>
+            <span *ngIf="IsNextElement">
+                {{MainElementInfo.seriesName}}
+            </span>
+
+            <button class="style-ladda mat-button-long-filled-play ladda-button" 
+                style="white-space: nowrap;"
+                (click)="followTheSeries()"
+                *ngIf="!IsNextElement && !currentUserFollowsThisSeries && !IsFromComments" matTooltip="Click pentru a urmari emisiunea"
+                [ladda]="isFollowRequestLoading">
+                    Urmareste<fa-icon class="icon-small-follow" [icon]="['fas', 'info-circle']"></fa-icon>
+                </button>
+
+            <button class="style-ladda mat-button-long-play ladda-button" 
+                style="white-space: nowrap;"
+                (click)="unfollowTheSeries()"
+                *ngIf="!IsNextElement && currentUserFollowsThisSeries && !IsFromComments" matTooltip="Click pentru a NU mai urmari emisiunea"
+                [ladda]="isUnFollowRequestLoading">
+                    Urmarita<fa-icon class="icon-small-follow" [icon]="['fas', 'info-circle']"></fa-icon>
+                </button>
+        </div>
+
+        <div style="height: 6px;"></div>
+        <div class="video-series-vid-title">
+            S{{MainElementInfo.season}} E{{MainElementInfo.episode}}: {{MainElementInfo.title}}
+        </div>
+
+        <div style="height: 3px;"></div>
+
+        <div class="video-series-vid-title">
+            {{MainElementInfo.numberOfViews | number}} vizionari <span>&#8226;</span> {{MainElementInfo.createdDate | wvdtimeago}}
+        </div>
+
+        <div *ngIf="!IsNextElement" class="video-series-vid-title">
+            Incarcat pe {{MainElementInfo.createdDate | date: 'dd/MM/yyyy'}}
+        </div>
+        
+        <div style="height: 3px;"></div>
+
+        <a *ngIf="!IsNextElement" href="javascript:void(0)" class="flex-align-center" (click)="goToProducer(MainElementInfo.producerId)">
+            <img class="small-prod-thumb" [src]="MainElementInfo.producerThumbnail" *ngIf="MainElementInfo.producerThumbnail">
+            <span style="font-size: 13px;">{{MainElementInfo.producerName}}</span>
+        </a>
+        <div *ngIf="IsNextElement" class="flex-align-center video-series-vid-title">
+            <img class="small-prod-thumb" [src]="MainElementInfo.producerThumbnail" *ngIf="MainElementInfo.producerThumbnail">
+            <span style="font-size: 13px;">{{MainElementInfo.producerName}}</span>
+        </div>
+    </div>
+</div>
+
+<div style="height: 10px;" *ngIf="!IsNextElement && !IsFromComments"></div>
+
+<div [innerHTML]="MainElementInfo.description | linkify" *ngIf="!IsNextElement && !IsFromComments"
+  #videoDescription
+  (click)="clickOnDescription()"
+  [style.max-height]="!descriptionHasTheClass && (descScrollableHeight != 0) ? descScrollableHeight : ''"
+  [class.series-description]="descriptionHasTheClass"
+  class="font-14 white-space transition-height"></div>
+
+<div *ngIf="isShowMoreDescriptionButtonVisible && !IsFromComments" class="show-more-btn not-selectable" (click)="showMoreDescription()">Arată mai mult</div>
+<div *ngIf="isShowLessDescriptionButtonVisible && !IsFromComments" class="show-more-btn not-selectable" (click)="showLessDescription()">Arată mai puțin</div>
+
+<div style="height: 15px;" *ngIf="!IsNextElement && !IsFromComments"></div>

@@ -1,0 +1,84 @@
+<div style="height: 20px;"></div>
+
+<div class="search-padding display-flex search-header" style="justify-content: space-evenly;">
+
+  <h5 [matMenuTriggerFor]="seriesFirstMenu" class="font-16 section-title margin-bottom-0 discover-dropdowns-categories display-flex" style="margin: 0 !important;">
+      <div>{{selectedCategoryFilterObject.capitalRoName}}</div>
+      <div class="search-filter-icon">
+        <fa-icon class="" [icon]="['fas', 'sort-down']"></fa-icon>
+      </div>
+
+      <mat-menu #seriesFirstMenu="matMenu">
+        <button *ngFor="let element of allChannelsInfo; let indexE = index" 
+          (click)="selectSeriesCategoryFilter(element)" mat-menu-item>{{element.capitalRoName}}</button>
+      </mat-menu>
+  </h5>
+
+  <h5 [matMenuTriggerFor]="prodFollowMenu" class="font-16 section-title margin-bottom-0 discover-dropdowns-categories display-flex" style="margin: 0 !important;">
+    <div>{{optionFilterText}}</div>
+    <div class="search-filter-icon">
+      <fa-icon class="" [icon]="['fas', 'sort-down']"></fa-icon>
+    </div>
+
+    <mat-menu #prodFollowMenu="matMenu">
+        <button (click)="selectSeriesOptionFilter('recommended')" mat-menu-item>Recomandate</button>
+        <button (click)="selectSeriesOptionFilter('new')" mat-menu-item>Cele mai noi</button>
+        <button (click)="selectSeriesOptionFilter('mostFollowed')" mat-menu-item>Top urmariri</button>
+        <button (click)="selectSeriesOptionFilter('mostViewed')" mat-menu-item>Top vizionari</button>
+    </mat-menu>
+  </h5>
+
+</div>
+
+<div style="height: 20px;"></div>
+
+<div *ngFor="let element of series; let indexE = index" class="series-list-wrapper">
+  <div class="display-flex series-list-hover" (click)="navigateToSeries(element.id)">
+    <div class="slider-image-wrapper-list not-selectable" (click)="redirectTo(element.redirectUrl)">
+      <div class="inner">
+        <img *ngIf="element.producerProfileImageUrl && !(indexE == currentIndex + 2)" class="prod-series-img" [src]="element.producerProfileImageUrl">
+
+        <img *ngIf="element.thumbnailUrl" class="slider-image s-i-series series-border-radius slider-series-contur" [src]="element.thumbnailUrl">
+        <img *ngIf="!element.thumbnailUrl" class="slider-image s-i-series series-border-radius slider-series-contur" src="assets/noimgseries.jpeg">
+
+        <span class="app-chip slider-element-chip position-slider-category">{{element.category}}</span>
+        <div class="app-chip slider-element-chip position-slider-followers" matTooltip="Emisiune urmarita de {{element.followersCount}} WeVeed-eri">
+          <span class="font-14">
+            {{element.followersCount | number}} 
+            <span *ngIf="element.followersCount != 1">urmaritori</span>
+            <span *ngIf="element.followersCount == 1">urmaritor</span>
+          </span>
+          <!-- <fa-icon class="icon-small-follow" [icon]="['fas', 'user']"></fa-icon> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="series-right-info">
+      <div class="series-list-name">
+        {{element.name}}
+      </div>
+      <div style="height: 8px;"></div>
+      <span class="series-list-desc">
+        {{element.description}}
+      </span>
+      <div style="height: 8px;"></div>
+      <div class="series-list-se">
+        <span>{{element.lastSeason}} </span>
+        <span *ngIf="element.lastSeason != 1">Sezoane </span>
+        <span *ngIf="element.lastSeason == 1">Sezon </span>
+        <span>{{element.episodesCount}} </span>
+        <span *ngIf="element.episodesCount != 1">Episoade</span>
+        <span *ngIf="element.episodesCount == 1">Episod</span>
+      </div>
+    </div>
+  </div>
+  <div style="height: 20px;"></div>
+</div>
+  
+<app-loading-blocks-my-followings *ngIf="isSeriesRequestLoading"></app-loading-blocks-my-followings>
+
+<div style="height: 20px;"></div>
+
+<div class="no-content-text">
+  Lista incarcata complet
+</div>

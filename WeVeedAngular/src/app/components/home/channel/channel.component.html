@@ -1,0 +1,52 @@
+<video *ngIf="videoWatchDto && !isRequestLoading && !isResourceNotFound" 
+    id="videoPlayerId"
+    class="video-js vjs-big-play-centered vjs-default-skin"
+    controls
+    preload="auto"
+    style="width: 100%; height: 100%; cursor: auto;"
+    >
+        <source [src]="videoWatchDto.videoUrl" type="video/mp4">
+</video>
+
+<img class="video-loading" src="assets/giphy.gif" *ngIf="isRequestLoading">
+
+<div style="height: 100%;"
+    *ngIf="showOverlay || isResourceNotFound || isSomethingWentWrong">
+
+    <div class="wrapper-elements-center error-wrapper" style="z-index: 12;" *ngIf="isResourceNotFound || isSomethingWentWrong">
+        <fa-icon class="watch-not-found"
+        [icon]="['fas', 'exclamation-circle']">
+        </fa-icon>
+        <div class="watch-not-found-text" *ngIf="isResourceNotFound">
+        Resursa nu a fost gasita. <a href="javascript:void(0)" (click)="goToGeneralChanngel()">Mergi la Canalul General</a>
+        </div>
+        <div class="watch-not-found-text" *ngIf="isSomethingWentWrong">
+        Ceva nu a mers bine. <a href="javascript:void(0)" (click)="goToGeneralChanngel()">Mergi la Canalul General</a>
+        </div>
+    </div>
+
+    <div class="video-btns play-video not-selectable" [@fadeInOut]
+        (click)="clickOverlayPlay()"
+        *ngIf="showPlayBtn && showOverlay">
+            <img src="assets/play.png" class="icons-dims hover-zoom-wide centered-absolute not-selectable">
+            <img src="assets/prev.png" class="icons-dims prev-video hover-zoom-wide not-selectable" (click)="goToPreviousVideo()" matTooltip="Video-ul precedent">
+            <img src="assets/next.png" class="icons-dims next-video hover-zoom-wide not-selectable" (click)="goToNextVideo()" matTooltip="Video-ul urmator">
+    </div>
+
+    <div class="video-btns pause-video not-selectable" [@fadeInOut]
+        (click)="clickOverlayPause()"
+        (mouseenter)="mouseEnterPause()" 
+        (mouseleave)="mouseLeavePause()"
+        (mousemove)="mouseMovePause()"
+        *ngIf="!showPlayBtn && showOverlay">
+            <img src="assets/pause.png" class="icons-dims hover-zoom-wide centered-absolute">
+            <img src="assets/prev.png" class="icons-dims prev-video hover-zoom-wide not-selectable" (click)="goToPreviousVideo()" matTooltip="Video-ul precedent">
+            <img src="assets/next.png" class="icons-dims next-video hover-zoom-wide not-selectable" (click)="goToNextVideo()" matTooltip="Video-ul urmator">
+    </div>
+</div>
+
+<div class="mock-overlay"
+  (click)="clickMock()"
+  (mouseenter)="mouseEnterMock()" 
+  (mouseleave)="mouseLeaveMock()"
+  (mousemove)="mouseMoveMock()"></div>

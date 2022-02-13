@@ -1,0 +1,10 @@
+
+
+<div class="paginator-wrapper" *ngIf="paginatorInfo && paginatorInfo.halfCardElements && paginatorInfo.halfCardElements.length">
+  <div *ngFor="let video of paginatorInfo.halfCardElements; let indexE = index" 
+    class="paginator-image-wrapper paginator-list not-selectable" style="padding: 6px 0px;">
+    <!-- <app-video-element [video]="video"></app-video-element> -->
+    <!-- <app-play-now-main-element [MainElementInfo]="video" [IsNextElement]="true"></app-play-now-main-element> -->
+    <app-video-half-card [Element]="video" [PaginatorIsInProducerProfile]="PaginatorIsInProducerProfile"></app-video-half-card>
+  </div>
+</div>

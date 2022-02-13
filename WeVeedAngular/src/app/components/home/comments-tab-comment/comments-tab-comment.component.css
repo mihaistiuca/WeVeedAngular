@@ -1,0 +1,25 @@
+.comments-box {
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.comments-profile-image {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 32px;
+    margin: 4px;
+    float: left;
+}
+
+.comments-blue-bold-text {
+    color: var(--weveed-blue);
+    font-weight: 600;
+}
+
+.comments-text {
+    height: 100%;
+}
+
+.comments-grey-text {
+    color: #bbbbbb;
+}

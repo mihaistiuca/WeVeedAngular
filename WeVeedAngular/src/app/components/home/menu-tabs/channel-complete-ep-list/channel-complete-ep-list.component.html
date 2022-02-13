@@ -1,0 +1,17 @@
+
+<div style="height: 20px;"></div>
+
+<div>
+  <h5 class="play-now-message">Programul canalului <span style="color: #2da8da;" *ngIf="channelConfig">{{channelConfig.capitalRoName}}</span></h5>
+
+  <div class="series-wrapper">
+    <div *ngIf="channelVideosInfo">
+      <div style="height: 10px;"></div>
+      <div *ngFor="let element of channelVideosInfo">
+          <app-play-now-main-element [MainElementInfo]="element" [IsNextElement]="true" [InsideChannelProgram]="channelName"></app-play-now-main-element>
+          <div style="height: 10px;"></div>
+      </div>
+    </div>
+    <app-loading-blocks-playing-now-next *ngIf="areEpisodesLoading"></app-loading-blocks-playing-now-next>
+  </div>
+</div>

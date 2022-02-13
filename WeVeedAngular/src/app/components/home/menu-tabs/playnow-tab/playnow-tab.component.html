@@ -1,0 +1,41 @@
+<!-- <app-playnow-information></app-playnow-information> -->
+
+<perfect-scrollbar [config]="config" #perfectScroll>
+    <div style="height: 14px;"></div>
+
+    <h5 class="play-now-message">
+        Rulează acum <span *ngIf="channelDisplay">în Canalul {{channelDisplay}}</span>
+    </h5>
+
+    <div class="mat-tab-body-content">
+        <div style="padding: 10px 24px 24px 24px;" *ngIf="isSingleVideoPlaying">
+            <div *ngIf="singleVideoInfo">
+                <app-play-now-main-element [MainElementInfo]="singleVideoInfo" [IsSingleVideoPlaying]="true"></app-play-now-main-element>
+            </div>
+            <app-loading-blocks-playing-now-main *ngIf="!singleVideoInfo"></app-loading-blocks-playing-now-main>
+        </div>
+            
+        <div style="padding: 10px 24px 24px 24px;" *ngIf="isChannelVideoPlaying">
+            <div *ngIf="channelVideoInfo">
+                <app-play-now-main-element [MainElementInfo]="channelVideoInfo"></app-play-now-main-element>
+            </div>
+            <app-loading-blocks-playing-now-main *ngIf="isChannelVideosLoading"></app-loading-blocks-playing-now-main>
+
+            <div style="height: 6px;"></div>
+
+            <h5 class="play-now-message" style="padding: 0;">
+                Urmează in Canalul {{channelDisplay}}
+            </h5>
+            <div style="height: 4px;"></div>
+
+            <div *ngIf="channelNextVideosInfo">
+                <div style="height: 10px;"></div>
+                <div *ngFor="let element of channelNextVideosInfo">
+                    <app-play-now-main-element [MainElementInfo]="element" [IsNextElement]="true"></app-play-now-main-element>
+                    <div style="height: 10px;"></div>
+                </div>
+            </div>
+            <app-loading-blocks-playing-now-next *ngIf="isChannelNextVideosLoading"></app-loading-blocks-playing-now-next>
+        </div>
+    </div>
+</perfect-scrollbar>

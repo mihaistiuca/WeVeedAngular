@@ -1,0 +1,20 @@
+
+<div class="account-tab-inner-container" *ngIf="!authService.isAuthenticated()">
+    <perfect-scrollbar [config]="config">
+        <app-login *ngIf="showLogin && !showResetPasswordSendEmail" [isOpenFromSidebar]="true"></app-login>
+        <app-register *ngIf="!showLogin && !showResetPasswordSendEmail" [isOpenFromSidebar]="true"></app-register>
+
+        <app-reset-password-send-email *ngIf="showResetPasswordSendEmail"></app-reset-password-send-email>
+    </perfect-scrollbar>
+</div>
+
+<div class="account-tab-info-inner-container" *ngIf="authService.isAuthenticated()" (scroll)="scrollHandler($event)">
+    <div *ngIf="currentUserBasicInfo != null">
+        <app-my-account *ngIf="userType == 'user'"></app-my-account>
+        <app-my-account-producer *ngIf="userType == 'producer'"></app-my-account-producer>
+    </div>
+
+    <div class="loading-anim-wrapper" *ngIf="currentUserBasicInfo == null">
+        <app-loading-blocks-profile></app-loading-blocks-profile>
+    </div>
+</div>

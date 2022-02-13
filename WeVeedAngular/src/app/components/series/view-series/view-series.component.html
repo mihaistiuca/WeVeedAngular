@@ -1,0 +1,139 @@
+
+<div class="series-wrapper">
+  <app-loading-blocks-series-header *ngIf="isSeriesLoading"></app-loading-blocks-series-header>
+</div>
+
+<div *ngIf="!isSeriesLoading" class="series-wrapper">
+
+  <div class="series-top-wrapper">
+  
+    <div class="slider-image-wrapper not-selectable">
+      <img *ngIf="series.producerProfileImageUrl" class="prod-series-img" [src]="series.producerProfileImageUrl">
+
+      <img *ngIf="series.thumbnailUrl" class="slider-image s-i-series series-border-radius slider-series-contur" [src]="series.thumbnailUrl">
+      <img *ngIf="!series.thumbnailUrl" class="slider-image s-i-series series-border-radius slider-series-contur" src="assets/noimgseries.jpeg">
+      <span class="app-chip slider-element-chip position-slider-category">{{series.category}}</span>
+    </div>
+
+    <div class="series-highlights">
+      <div>
+        <div class="series-highlight">
+          <div class="view-details-value">{{series.lastSeason}}</div>
+          <div class="view-details-expl">
+            <span *ngIf="series.lastSeason == 1">Sezon</span>
+            <span *ngIf="series.lastSeason != 1">Sezoane</span>
+          </div>
+        </div>
+        <div class="series-highlight">
+          <div class="view-details-value">{{series.episodesCount}}</div>
+          <div class="view-details-expl">
+            <span *ngIf="series.episodesCount == 1">Episod</span>
+            <span *ngIf="series.episodesCount != 1">Episoade</span>
+          </div>
+        </div>
+        <div class="series-highlight">
+          <div class="view-details-value">{{series.followersCount}}</div>
+          <div class="view-details-expl">
+            <span *ngIf="series.followersCount == 1">Urmaritor</span>
+            <span *ngIf="series.followersCount != 1">Urmaritori</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 10px;"></div>
+
+      <button class="style-ladda mat-button-long-filled ladda-button" 
+        *ngIf="!currentUserFollowsThisSeries"
+        (click)="followTheSeries()"
+        [ladda]="isFollowRequestLoading">
+          Urmareste emisiunea
+      </button>
+
+      <button class="style-ladda mat-button-long ladda-button" 
+        *ngIf="currentUserFollowsThisSeries"
+        (click)="unfollowTheSeries()"
+        [ladda]="isUnFollowRequestLoading">
+          <span>
+            Emisiune urmarita
+          </span>
+      </button>
+    </div>
+
+  </div>
+
+  <div style="height: 20px;"></div>
+
+  <div class="element-title-wrapper">
+    <div class="element-name-wrapper">
+      <span class="element-name font-series-title">
+        {{series.name}}
+      </span>
+      
+      <span class="by-producer">
+        by <a href="javascript:void(0)" (click)="goToProducer()">{{series.producerName}}</a>
+      </span>
+      <img class="prod-series-img-small" *ngIf="series.producerProfileImageUrl" [src]="series.producerProfileImageUrl" (click)="goToProducer()">
+
+      <fa-icon *ngIf="series.producerId == currentUserId" (click)="goToDeleteSeries()" class="del-item-icon action-item-icon" [icon]="['fas', 'trash']"></fa-icon>
+      <fa-icon *ngIf="series.producerId == currentUserId" (click)="goToUpdateSeries()" class="edit-item-icon action-item-icon" [icon]="['fas', 'edit']"></fa-icon>
+    </div>
+  </div>
+
+  <div style="height: 15px;"></div>
+
+  <div [innerHTML]="series.description | linkify" 
+    #seriesDescription
+    (click)="clickOnDescription()"
+    [style.max-height]="!descriptionHasTheClass && (descScrollableHeight != 0) ? descScrollableHeight : ''"
+    [class.series-description]="descriptionHasTheClass"
+    class="font-14 white-space transition-height"></div>
+
+  <div *ngIf="isShowMoreDescriptionButtonVisible" class="show-more-btn not-selectable" (click)="showMoreDescription()">Arată mai mult</div>
+  <div *ngIf="isShowLessDescriptionButtonVisible" class="show-more-btn not-selectable" (click)="showLessDescription()">Arată mai puțin</div>
+  
+  <div style="margin-top: 10px;"></div>
+</div>
+
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div _ngcontent-c24="" style="border-bottom: 1px solid #464646;"></div>
+
+<div class="series-wrapper">
+  <div style="margin-top: 10px;"></div>
+  <div class="wrapper-elements-sides">
+    <h5 class="section-title" style="margin-bottom: 0;">Cele mai populare episoade</h5>
+    <a href="javascript:void(0)" class="" (click)="addEpisodeInSeries()" *ngIf="series && series.producerId == currentUserId">+ Adauga Episod</a>
+  </div>
+  <div style="margin-top: 15px;"></div>
+
+  <app-images-slider *ngIf="!isSliderMostViewedVideoLoading && sliderMostViewedVideo && sliderMostViewedVideo.elements && sliderMostViewedVideo.elements.length" 
+      [sliderInfo]="sliderMostViewedVideo"></app-images-slider>
+      
+  <div *ngIf="!isSliderMostViewedVideoLoading && (!sliderMostViewedVideo || !sliderMostViewedVideo.elements || !sliderMostViewedVideo.elements.length)" class="no-content-text">
+    <div>Aceasta emisiune nu are niciun video momentan.</div>
+  </div>
+
+  <app-loading-blocks-slider *ngIf="isSliderMostViewedVideoLoading"></app-loading-blocks-slider>
+</div>
+
+
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div style="margin-top: 10px;"></div>
+<div _ngcontent-c24="" style="border-bottom: 1px solid #464646;"></div>
+<div style="margin-top: 10px;"></div>
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div class="series-wrapper" *ngIf="videoPaginatorInfo && videoPaginatorInfo.halfCardElements && videoPaginatorInfo.halfCardElements.length">
+  <h5 class="section-title">Toate episoadele</h5>
+
+  <app-video-paginator [paginatorInfo]="videoPaginatorInfo"></app-video-paginator>
+
+  <app-loading-blocks-paginator *ngIf="moreVideosAreLoading"></app-loading-blocks-paginator>
+</div>
+
+<div *ngIf="!areThereAnyMoreVideos && videoPaginatorInfo && videoPaginatorInfo.halfCardElements && videoPaginatorInfo.halfCardElements.length" class="end-of-list">
+  Lista incarcata complet
+</div>
+
+<div style="height: 30px;"></div>

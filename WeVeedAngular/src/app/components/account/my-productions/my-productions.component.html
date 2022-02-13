@@ -1,0 +1,66 @@
+
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div class="wrapper-elements-sides" style="margin-bottom: 3px;">
+  <h5 class="font-16 section-title" style="margin-bottom: 0;">Emisiuni</h5>
+
+  <a href="javascript:void(0)" (click)="goToCreateSeries()">
+    + Creeaza emisiune
+  </a>
+</div>
+
+<app-images-slider *ngIf="!isSeriesSliderLoading && sliderInfoSeries && sliderInfoSeries.elements && sliderInfoSeries.elements.length" 
+    [sliderInfo]="sliderInfoSeries"></app-images-slider>
+
+<div *ngIf="!isSeriesSliderLoading && (!sliderInfoSeries || !sliderInfoSeries.elements || !sliderInfoSeries.elements.length)" class="no-content-text">
+  <div>Nu ai nicio emisiune momentan.</div>
+  <div style="height: 10px;"></div>
+</div>
+
+<app-loading-block-slider-series *ngIf="isSeriesSliderLoading"></app-loading-block-slider-series>
+
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div style="margin-top: 10px;"></div>
+
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div class="wrapper-elements-sides">
+  <h5 class="section-title" style="margin-bottom: 0;">Cele mai populare episoade</h5>
+
+  <a href="javascript:void(0)" (click)="goToAddVideos()">
+    + Adauga Episod
+  </a>
+</div>
+<!-- 
+<h6 class="small-text-center-grey">Cele mai populare</h6> -->
+
+<app-images-slider *ngIf="!isSliderMostViewedVideoLoading && sliderMostViewedVideo && sliderMostViewedVideo.elements && sliderMostViewedVideo.elements.length" 
+    [sliderInfo]="sliderMostViewedVideo"></app-images-slider>
+    
+<div *ngIf="!isSliderMostViewedVideoLoading && (!sliderMostViewedVideo || !sliderMostViewedVideo.elements || !sliderMostViewedVideo.elements.length)" class="no-content-text">
+  Nu ai niciun video momentan.
+</div>
+
+<app-loading-blocks-slider *ngIf="isSliderMostViewedVideoLoading"></app-loading-blocks-slider>
+
+
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div style="margin-top: 20px;"></div>
+
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div>
+  <h6 class="section-title">Toate episoadele</h6>
+
+  <app-video-paginator [paginatorInfo]="videoPaginatorInfo" [PaginatorIsInProducerProfile]="true"></app-video-paginator>
+
+  <app-loading-blocks-paginator *ngIf="moreVideosAreLoading"></app-loading-blocks-paginator>
+
+  <div *ngIf="!areThereAnyMoreVideos" class="no-content-text">
+    Lista incarcata complet
+  </div>
+</div>
+
+<div style="height: 30px;"></div>

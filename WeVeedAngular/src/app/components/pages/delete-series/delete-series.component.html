@@ -1,0 +1,31 @@
+
+<div class="menu-form-header">
+  <a (click)="backToSeries()" class="back-in-menu flex-1" href="javascript:void(0)">
+    <fa-icon class="" [icon]="['fas', 'chevron-left']" >
+    </fa-icon>
+    Renunta
+  </a>
+  <h5 class="text-center font-18-slim" style="margin: 0;">Stergere emisiune</h5>
+  <div class="flex-1"></div>
+</div>
+
+<div class="wrapper-elements-center confirm-wrapper">
+  <div class="">
+    <img src="assets/warning.png" />
+  </div>
+
+  <div *ngIf="seriesDto">
+    <div class="confirm-deletion-text">Esti sigur ca vrei sa stergi emisiunea "{{seriesDto.name}}"?</div>
+    <div class="confirm-deletion-text">Toate episoadele emisiunii ({{seriesDto.lastSeason}} sezoane, {{seriesDto.episodesCount}} episoade) vor fi sterse. Actiunea este ireversibila.</div>
+
+    <div style="height: 10px;"></div>
+  </div>
+
+  <div *ngIf="!seriesDto" style="width: 100%; padding: 0 25px 10px;">
+    <app-loading-blocks-confirm-text></app-loading-blocks-confirm-text>
+  </div>
+
+  <button mat-button class="mat-button-wrapper style-ladda" [ladda]="isFormSubmitting" (click)="deleteSeries()" style="color: #de1717; border-color: #de1717;">
+    Confirma
+  </button>
+</div>

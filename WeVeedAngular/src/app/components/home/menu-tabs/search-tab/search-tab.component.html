@@ -1,0 +1,170 @@
+
+
+<perfect-scrollbar [config]="config">
+<div class="search-padding">
+  <div class="search-wrapper">
+    <fa-icon class="menu-type-icon search-icon" [icon]="['fas', 'search']"></fa-icon>
+    <input [ngModel]="searchValue" (ngModelChange)="onChangeSearch($event)" class="search-input" type="text" placeholder="Cauta producători, emisiuni, episoade">
+    <fa-icon *ngIf="searchValue" (click)="emptySearchFiled()" class="menu-type-icon search-icon" [icon]="['fas', 'times']"></fa-icon>
+  </div>
+</div>
+
+<div style="height: 20px;"></div>
+
+<div class="search-padding-24 display-flex search-header">
+  <h5 class="font-17 section-title margin-bottom-0 not-selectable">Producători</h5>
+
+  <h5 *ngIf="!searchValue" [matMenuTriggerFor]="prodFirstMenu" class="font-16 section-title margin-bottom-0 discover-dropdowns display-flex">
+    <div>{{producersFirstFilterText}}</div>
+    <div class="search-filter-icon">
+      <fa-icon class="" [icon]="['fas', 'sort-down']"></fa-icon>
+    </div>
+
+    <mat-menu #prodFirstMenu="matMenu">
+      <button (click)="selectProducerFirstFilter('recommended')" mat-menu-item>Recomandati</button>
+      <button (click)="selectProducerFirstFilter('new')" mat-menu-item>Cei mai noi</button>
+      <button (click)="selectProducerFirstFilter('mostFollowed')" mat-menu-item>Top urmariri</button>
+      <button (click)="selectProducerFirstFilter('mostViewed')" mat-menu-item>Top vizionari</button>
+    </mat-menu>
+  </h5>
+
+  <h5 *ngIf="producersFirstFilterValue == 'mostFollowed' && !searchValue" [matMenuTriggerFor]="prodFollowMenu" class="font-16 section-title margin-bottom-0 discover-dropdowns display-flex">
+    <div>{{producerFollowFilterText}}</div>
+    <div class="search-filter-icon">
+      <fa-icon class="" [icon]="['fas', 'sort-down']"></fa-icon>
+    </div>
+
+    <mat-menu #prodFollowMenu="matMenu">
+      <button (click)="selectProducerFollowFilter('lastweek')" mat-menu-item>Ultima saptamana</button>
+      <button (click)="selectProducerFollowFilter('lastmonth')" mat-menu-item>Ultima luna</button>
+      <button (click)="selectProducerFollowFilter('alltime')" mat-menu-item>Din totdeauna</button>
+    </mat-menu>
+  </h5>
+
+  <h5 *ngIf="producersFirstFilterValue == 'mostViewed' && !searchValue" [matMenuTriggerFor]="prodViewedMenu" class="font-16 section-title margin-bottom-0 discover-dropdowns display-flex">
+    <div>{{producerViewedFilterText}}</div>
+    <div class="search-filter-icon">
+      <fa-icon class="" [icon]="['fas', 'sort-down']"></fa-icon>
+    </div>
+
+    <mat-menu #prodViewedMenu="matMenu">
+      <button (click)="selectProducerViewFilter('lastweek')" mat-menu-item>Ultima saptamana</button>
+      <button (click)="selectProducerViewFilter('lastmonth')" mat-menu-item>Ultima luna</button>
+      <button (click)="selectProducerViewFilter('alltime')" mat-menu-item>Din totdeauna</button>
+    </mat-menu>
+  </h5>
+
+</div>
+<div style="height: 10px;"></div>
+<div class="search-content-wrapper">
+  <app-producer-slider *ngIf="!isProducersRequestLoading && sliderInfoProducer && sliderInfoProducer.elements && sliderInfoProducer.elements.length" 
+    [sliderInfo]="sliderInfoProducer"></app-producer-slider>
+
+    <div *ngIf="!isProducersRequestLoading && (!sliderInfoProducer || !sliderInfoProducer.elements || !sliderInfoProducer.elements.length)" class="no-content-text">
+      Niciun producator gasit.
+    </div>
+
+  <app-loading-blocks-search-producers *ngIf="isProducersRequestLoading"></app-loading-blocks-search-producers>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ -->
+
+<div style="height: 16px;"></div>
+
+<div class="search-padding-24 display-flex search-header">
+  <h5 class="font-17 section-title margin-bottom-0 not-selectable">Emisiuni</h5>
+
+  <h5 *ngIf="!searchValue" [matMenuTriggerFor]="seriesFirstMenu" class="font-16 section-title margin-bottom-0 discover-dropdowns display-flex">
+    <div>{{seriesFirstFilterText}}</div>
+    <div class="search-filter-icon">
+      <fa-icon class="" [icon]="['fas', 'sort-down']"></fa-icon>
+    </div>
+
+    <mat-menu #seriesFirstMenu="matMenu">
+      <button (click)="selectSeriesFirstFilter('recommended')" mat-menu-item>Recomandate</button>
+      <button (click)="selectSeriesFirstFilter('new')" mat-menu-item>Cele mai noi</button>
+      <button (click)="selectSeriesFirstFilter('mostFollowed')" mat-menu-item>Top urmariri</button>
+      <button (click)="selectSeriesFirstFilter('mostViewed')" mat-menu-item>Top vizionari</button>
+    </mat-menu>
+  </h5>
+
+  <h5 *ngIf="seriesFirstFilterValue == 'mostFollowed' && !searchValue" [matMenuTriggerFor]="seriesFollowMenu" class="font-16 section-title margin-bottom-0 discover-dropdowns display-flex">
+    <div>{{seriesFollowFilterText}}</div>
+    <div class="search-filter-icon">
+      <fa-icon class="" [icon]="['fas', 'sort-down']"></fa-icon>
+    </div>
+
+    <mat-menu #seriesFollowMenu="matMenu">
+      <button (click)="selectSeriesFollowFilter('lastweek')" mat-menu-item>Ultima saptamana</button>
+      <button (click)="selectSeriesFollowFilter('lastmonth')" mat-menu-item>Ultima luna</button>
+      <button (click)="selectSeriesFollowFilter('alltime')" mat-menu-item>Din totdeauna</button>
+    </mat-menu>
+  </h5>
+  
+
+  <h5 *ngIf="seriesFirstFilterValue == 'mostViewed' && !searchValue" [matMenuTriggerFor]="seriesViewedMenu" class="font-16 section-title margin-bottom-0 discover-dropdowns display-flex">
+    <div>{{seriesViewedFilterText}}</div>
+    <div class="search-filter-icon">
+      <fa-icon class="" [icon]="['fas', 'sort-down']"></fa-icon>
+    </div>
+
+    <mat-menu #seriesViewedMenu="matMenu">
+      <button (click)="selectSeriesViewedFilter('lastweek')" mat-menu-item>Ultima saptamana</button>
+      <button (click)="selectSeriesViewedFilter('lastmonth')" mat-menu-item>Ultima luna</button>
+      <button (click)="selectSeriesViewedFilter('alltime')" mat-menu-item>Din totdeauna</button>
+    </mat-menu>
+  </h5>
+
+</div>
+<div style="height: 10px;"></div>
+
+<div class="mat-expansion-panel-body">
+  <app-images-slider *ngIf="!isSeriesRequestLoading && sliderInfoSeries && sliderInfoSeries.elements && sliderInfoSeries.elements.length" 
+      [sliderInfo]="sliderInfoSeries"></app-images-slider>
+
+  <div *ngIf="!isSeriesRequestLoading && (!sliderInfoSeries || !sliderInfoSeries.elements || !sliderInfoSeries.elements.length)" class="no-content-text">
+    Nicio emisiune gasita.
+  </div>
+
+  <app-loading-block-slider-series *ngIf="isSeriesRequestLoading"></app-loading-block-slider-series>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ -->
+
+<div style="height: 5px;"></div>
+
+
+<div *ngIf="!searchValue" style="min-height: 800px;">
+
+    <mat-tab-group mat-stretch-tabs [selectedIndex]="0" sticky="true">
+        
+        <!-- EMISIUNI PE CATEGORII -->
+        <mat-tab label="Emisiuni pe categorii">
+          <div style="padding: 10px 24px 24px 24px;">
+            <app-series-by-categories></app-series-by-categories>
+          </div>
+        </mat-tab>
+      
+        <!-- EPISOADE PE CATEGORII -->
+        <mat-tab label="Episoade pe categorii">
+          <app-episodes-by-categories></app-episodes-by-categories>
+        </mat-tab>
+      
+      </mat-tab-group>
+  <div style="height: 20px;"></div>
+</div>
+
+<div *ngIf="searchValue" class="vid-expansion-panel-body">
+  <h5 class="font-16 section-title margin-bottom-0 not-selectable">Episoade</h5>
+
+  <app-video-paginator [paginatorInfo]="paginatorInfoVideos"></app-video-paginator>
+
+  <div *ngIf="!isVideosSearchedRequestLoading && (!paginatorInfoVideos || !paginatorInfoVideos.elements || !paginatorInfoVideos.elements.length)" class="no-content-text">
+    Niciun episod gasit.
+  </div>
+
+  <app-loading-blocks-paginator *ngIf="isVideosSearchedRequestLoading"></app-loading-blocks-paginator>
+
+</div>
+
+</perfect-scrollbar>

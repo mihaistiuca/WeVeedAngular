@@ -1,0 +1,48 @@
+
+<div class="display-flex" (click)="playVideo(Element.id)" [class.opacity-05]="Element.encodedVideoKey == null">
+  <div class="play-now-main-video-wrapper">
+      <div class="inner">
+          <img *ngIf="Element.thumbnailUrl" class="main-video-image video-border-radius slider-video-contur" 
+              [src]="Element.thumbnailUrl">
+          <img *ngIf="!Element.thumbnailUrl" class="main-video-image video-border-radius slider-video-contur" 
+              src="assets/noimgseries.jpeg">
+
+          <div class="app-chip paginator slider-element-chip position-slider-duration-paginator">
+              {{Element.length | wvdduration }}
+          </div>
+          <img src="assets/play.png" class="hover-zoom play-video-icon not-selectable for-play-single">
+          
+          <img *ngIf="PaginatorIsInProducerProfile" src="assets/edit.png" (click)="navigateInSliderToUpdate(Element.id)"
+            class="hover-zoom play-video-icon not-selectable for-edit">
+
+          <img *ngIf="PaginatorIsInProducerProfile" src="assets/delete.png" (click)="navigateInSliderToDelete(Element.id)"
+            class="hover-zoom play-video-icon not-selectable for-delete">
+      </div>
+  </div>
+
+  <div class="main-video-right-info">
+      <div class="video-series-title" style="display: flex; align-items: center;">
+          <span>
+              {{Element.seriesName}}
+          </span>
+      </div>
+
+      <div style="height: 6px;"></div>
+      <div class="video-series-vid-title">
+          S{{Element.season}} E{{Element.episode}}: <b>{{Element.title}}</b>
+      </div>
+
+      <div style="height: 3px;"></div>
+
+      <div class="video-series-vid-title">
+          {{Element.numberOfViews | number}} vizionari <span>&#8226;</span> {{Element.createdDate | wvdtimeago}}
+      </div>
+      
+      <div style="height: 3px;"></div>
+
+      <div class="flex-align-center video-series-vid-title">
+          <img class="small-prod-thumb" [src]="Element.producerThumbnail" *ngIf="Element.producerThumbnail">
+          <span style="font-size: 13px;">{{Element.producerName}}</span>
+      </div>
+  </div>
+</div>

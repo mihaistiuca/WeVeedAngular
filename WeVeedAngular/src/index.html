@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>WeVeed - Cele mai tari emisiuni din online, la un singur click distanta!</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="assets/weveedl.png">
+
+  <!-- https://github.com/aws/aws-amplify/issues/678 fix: -->
+  <script>
+    if (global === undefined) {
+      var global = window;
+    }
+  </script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-121852708-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-121852708-1');
+  </script>
+
+  <!-- https://github.com/aws/aws-amplify/issues/678 fix end-->
+</head>
+<body>
+  <app-root>
+      <div style="height: 100%; width: 100%;">
+          <div style="height: 40%;"></div>
+          <div style="text-align: center;">
+            <img style="height: 26px; margin: 0 auto;" src="assets/logo.png">
+          </div>
+      
+          <div style="height: 20px;"></div>
+      
+          <div style="text-align: center">
+            <img style="height: 50px;" src="./assets/spin.gif">
+          </div>
+        </div>
+  </app-root>
+  
+  
+</body>
+</html>

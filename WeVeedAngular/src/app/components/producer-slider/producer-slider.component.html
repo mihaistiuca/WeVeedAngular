@@ -1,0 +1,33 @@
+
+<div style="position: relative;">
+  <div class="thumbs-slider-prod-wrapper">
+    <div class="slider-animated" [style.transform]="myTransformValue()">
+      <div [title]="producer.producerName" *ngFor="let producer of sliderInfo.elements" class="paginator-producer-wrapper" (click)="redirectTo(producer.redirectUrl)">
+
+        <!-- <img *ngIf="producer.profileImageUrl" class="slider-image s-i-series series-border-radius slider-series-contur" [src]="producer.profileImageUrl"> -->
+        <img *ngIf="producer.profileImageUrl" class="slider-image s-i-producer producer-border-radius slider-series-contur" 
+          [src]="producer.profileImageUrl">
+        
+        <img *ngIf="!producer.profileImageUrl" class="slider-image s-i-producer producer-border-radius slider-series-contur-noimg"
+          src="assets/person.png">
+        <!-- <fa-icon *ngIf="!producer.profileImageUrl" class="menu-type-icon" [icon]="['fas', 'user-circle']"></fa-icon> -->
+
+        <div class="text-center search-producer-name-text">
+          {{producer.producerName}}
+        </div>
+
+        <div *ngIf="producer.isNew" class="elem-new-badge">
+          nou
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div (click)="moveLeft()" class="arrow-slider-wrapper left for-producer" [class.disabled]="isAtBeginning" *ngIf="shouldDisplayLeftArrow">
+    <fa-icon class="video-controls-icon icon-large-size icon-white" [icon]="['fas', 'angle-left']"></fa-icon>
+  </div>
+  <div (click)="moveRight()" class="arrow-slider-wrapper right for-producer" [class.disabled]="reachedEnd" *ngIf="shouldDisplayRightArrow">
+    <fa-icon class="video-controls-icon icon-large-size icon-white" [icon]="['fas', 'angle-right']"></fa-icon>
+  </div>
+</div>

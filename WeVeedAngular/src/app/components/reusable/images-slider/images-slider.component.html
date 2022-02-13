@@ -1,0 +1,77 @@
+<div *ngIf="sliderInfo.isSeries" style="position: relative; margin-left: -6px; margin-right: -6px;">
+  <div class="thumbs-slider-wrapper">
+    <div class="slider-animated slider-padding for-series" [style.transform]="myTransformValue()">
+
+
+      
+
+
+      <div *ngFor="let element of sliderInfo.elements; let indexE = index" class="slider-series-wrapper not-selectable" (click)="redirectTo(element.redirectUrl)">
+
+        <div class="slider-series-inner-wrapper">
+          <span class="app-chip slider-element-chip position-slider-category">{{element.seriesCategory}}</span>
+          
+          <div style="position: relative;">
+            <img *ngIf="element.producerProfileImageUrl && !(indexE == currentIndex + 2)" class="prod-series-img-explore" [src]="element.producerProfileImageUrl">
+
+            <img *ngIf="element.imgSrc" class="slider-image s-i-series" [src]="element.imgSrc">
+            <img *ngIf="!element.imgSrc" class="slider-image s-i-series" src="assets/noimgseries.jpeg">
+          </div>
+
+          <div class="slider-series-text-wrapper">
+              
+            <div [title]="element.name" class="one-row-clamp series-card-name">{{element.name}}</div>
+
+            <div [title]="element.name" class="one-row-clamp series-card-episodes">
+              {{element.lastSeason}} 
+              <span *ngIf="element.lastSeason == 1">Sezon</span>
+              <span *ngIf="element.lastSeason != 1">Sezoane</span>
+              &#8226; 
+              {{element.episodesCount}} 
+              <span *ngIf="element.episodesCount == 1">Episod</span>
+              <span *ngIf="element.episodesCount != 1">Episoade</span>
+            </div>
+          
+            <div [title]="element.name" class="one-row-clamp series-card-episodes">
+              <span class="weveed-dot">&#8226;</span>
+              {{element.followersCount}}
+              <span *ngIf="element.followersCount == 1">urmaritor</span>
+              <span *ngIf="element.followersCount != 1">urmaritori</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div (click)="moveLeft()" class="arrow-slider-wrapper left for-series" [class.disabled]="isAtBeginning" *ngIf="shouldDisplayLeftArrow">
+    <fa-icon class="video-controls-icon icon-large-size icon-white" [icon]="['fas', 'angle-left']"></fa-icon>
+  </div>
+  <div (click)="moveRight()" class="arrow-slider-wrapper right for-series" [class.disabled]="reachedEnd" *ngIf="shouldDisplayRightArrow">
+    <fa-icon class="video-controls-icon icon-large-size icon-white" [icon]="['fas', 'angle-right']"></fa-icon>
+  </div>
+</div>
+
+
+
+<div *ngIf="sliderInfo.isVideo" style="position: relative; margin-left: -6px; margin-right: -6px;">
+  <div class="thumbs-slider-wrapper">
+    <div class="slider-animated" [style.transform]="myTransformValue()">
+      <div *ngFor="let video of sliderInfo.elements" class="paginator-image-wrapper not-selectable" style="padding: 2px 4px;">
+
+        <app-video-element [video]="video"></app-video-element>
+
+      </div>
+    </div>
+  </div>
+
+  <div (click)="moveLeft()" class="arrow-slider-wrapper left for-video" [class.disabled]="isAtBeginning" *ngIf="shouldDisplayLeftArrow">
+    <fa-icon class="video-controls-icon icon-large-size icon-white" [icon]="['fas', 'angle-left']"></fa-icon>
+  </div>
+  <div (click)="moveRight()" class="arrow-slider-wrapper right for-video" [class.disabled]="reachedEnd" *ngIf="shouldDisplayRightArrow">
+    <fa-icon class="video-controls-icon icon-large-size icon-white" [icon]="['fas', 'angle-right']"></fa-icon>
+  </div>
+</div>

@@ -1,0 +1,201 @@
+<mat-tab-group mat-stretch-tabs [selectedIndex]="2">
+    <mat-tab label="Informatii Personale">
+      
+        <div class="padding-24-60" *ngIf="isInUserEditMode">
+
+            <div *ngIf="userProfileImageEditableIsDisplayed" class="text-center position-relative">
+              <img class="profile-img" *ngIf="!userProfileImageUrl" src="assets/nouserimage.png">
+              <img class="profile-img" *ngIf="userProfileImageUrl" [src]="userProfileImageUrl">
+              <label for="userImageUploader" class="pic-change-wrapper">
+                <fa-icon class="font-size-25 transition-1s" [icon]="['fas', 'camera']"></fa-icon>
+              </label>
+            </div>
+  
+            <input #imageInputUser class="display-none" id="userImageUploader" 
+              type="file" accept="image/png, image/jpeg" (change)="fileChangeEvent($event)" />
+            <div *ngIf="!userProfileImageEditableIsDisplayed" class="image-cropper-wrapper cropper-update-user">
+              <image-cropper
+                  [imageChangedEvent]="imageChangedEvent"
+                  [maintainAspectRatio]="true"
+                  [aspectRatio]="1 / 1"
+                  [resizeToWidth]="100"
+                  format="png"
+                  (imageCroppedBase64)="imageCropped($event)"
+                  (imageLoaded)="imageLoaded()"
+                  (loadImageFailed)="loadImageFailed()"
+              ></image-cropper>
+              
+              <div class="display-none">
+                <img class="cropper-image" [src]="croppedImage" />
+              </div>
+            </div>
+            <div *ngIf="!userProfileImageEditableIsDisplayed" class="helper-grey-text text-center">
+              <div>Ajusteaza imaginea si salveaza informatiile</div>
+            </div>
+  
+  
+            <div style="height: 20px;"></div>
+            <form [formGroup]="userInfoForm" autocomplete="off" (keydown)="keyDownFunctionOnForm($event)">
+              <mat-form-field class="split-form-control">
+                <input matInput placeholder="Prenume" [formControl]="firstName" autofocus >
+                <mat-error *ngIf="firstName.hasError('required')">
+                  Prenumele este <strong>obligatoriu</strong>
+                </mat-error>
+                <mat-error *ngIf="firstName.hasError('maxlength')">
+                  Maxim <strong>50 de caractere</strong> acceptate
+                </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field class="split-form-control float-right">
+                <input matInput placeholder="Nume" [formControl]="lastName">
+                <mat-error *ngIf="lastName.hasError('required')">
+                  Numele este <strong>obligatoriu</strong>
+                </mat-error>
+                <mat-error *ngIf="lastName.hasError('maxlength')">
+                  Maxim <strong>50 de caractere</strong> acceptate
+                </mat-error>
+              </mat-form-field>
+  
+              <mat-form-field>
+                <span matPrefix>
+                  <img class="in-field-icon" src="assets/weveedl.png">
+                  &nbsp;
+                </span>
+                <input matInput placeholder="Nume de producator" [formControl]="producerName" autofocus >
+                <mat-error *ngIf="producerName.hasError('required')">
+                  Numele de producator este <strong>obligatoriu</strong>
+                </mat-error>
+                <mat-error *ngIf="producerName.hasError('maxlength')">
+                  Maxim <strong>50 de caractere</strong> acceptate
+                </mat-error>
+                <mat-error *ngIf="producerName.hasError('isProducerNameUnique')">
+                  Numele de producator este deja utilizat
+                </mat-error>
+                <mat-spinner *ngIf="isProducerNameUniqueRequestLoading" class="field-loading-spinner">
+                </mat-spinner>
+                <fa-icon class="check-field-icon" [icon]="['fas', 'check-circle']"
+                  *ngIf="!producerName.hasError('required') && !producerName.hasError('maxlength') && !producerName.hasError('isProducerNameUnique') && !isProducerNameUniqueRequestLoading" [@fadeInOut] >
+                </fa-icon>
+              </mat-form-field>
+        
+              <mat-form-field>
+                <perfect-scrollbar [config]="config">
+                  <textarea matTextareaAutosize matInput class="no-scrollbar prevent-enter-submit min-height-50 max-height-105" 
+                    placeholder="Descriere producator" [formControl]="producerDescription">
+                  </textarea>
+                </perfect-scrollbar>
+                <mat-error *ngIf="producerDescription.hasError('required')">
+                  Descrierea producatorului este <strong>obligatoriu</strong>
+                </mat-error>
+                <mat-error *ngIf="producerDescription.hasError('maxlength')">
+                  Maxim <strong>500 de caractere</strong> acceptate
+                </mat-error>
+              </mat-form-field>
+      
+              <!-- <mat-form-field>
+                <span matPrefix>
+                  <img class="in-field-icon" src="assets/mail.png">
+                  &nbsp;
+                </span>
+                <input matInput placeholder="Email de contact" [formControl]="emailContact">
+                <mat-error *ngIf="emailContact.hasError('maxlength')">
+                  Maxim <strong>500 de caractere</strong> acceptate
+                </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field>
+                <span matPrefix>
+                  <img class="in-field-icon" src="assets/fffff.png">
+                  &nbsp;
+                </span>
+                <input matInput placeholder="Link catre contul de Facebook" [formControl]="facebookContactUrl">
+                <mat-error *ngIf="facebookContactUrl.hasError('maxlength')">
+                  Maxim <strong>500 de caractere</strong> acceptate
+                </mat-error>
+              </mat-form-field>
+      
+              <mat-form-field>
+                <span matPrefix>
+                  <img class="in-field-icon" src="assets/instagram.png">
+                  &nbsp;
+                </span>
+                <input matInput placeholder="Link catre contul de Instagram" [formControl]="instaContactUrl">
+                <mat-error *ngIf="instaContactUrl.hasError('maxlength')">
+                  Maxim <strong>500 de caractere</strong> acceptate
+                </mat-error>
+              </mat-form-field> -->
+            </form>
+            <div class="flex-space-between">
+              <div class="flex-1">
+                <button (click)="cancelUserChange()" mat-button class="cancel-btn float-right">Renunta</button>
+              </div>
+              <div class="flex-1 text-center">
+                <button class="style-ladda" [ladda]="isUserFormSubmitting" (click)="submitUserInfoForm()" mat-button>Salveaza</button>
+              </div>
+              <div class="flex-1"></div>
+            </div>
+        </div>
+  
+        <div class="profile-not-edit-wrapper" *ngIf="!isInUserEditMode">
+  
+          <!-- <div class="display-flex-center">
+            <div class="width-30"> -->
+              <div>
+                <img class="profile-img" *ngIf="!userProfileImageUrl" src="assets/nouserimage.png">
+                <img class="profile-img" *ngIf="userProfileImageUrl" [src]="userProfileImageUrl">
+              </div>
+              <div class="producer-name-text">
+                {{userBasicInfo.producerName}}
+              </div>
+            <!-- </div> -->
+            <!-- <div [innerHTML]="userBasicInfo.producerDescription.split('\n')[0] | linkify" class="width-70 font-13"> -->
+            <div [innerHTML]="userBasicInfo.producerDescription | linkify" class="font-13 white-space" style="text-align: justify;">
+            </div>
+          <!-- </div> -->
+  
+          <div style="height: 10px;"></div>
+  
+          <!-- <div class="media-icons-wrapper">
+            <img *ngIf="!userBasicInfo.emailContact" matTooltip="Email-ul nu a fost completat" 
+              class="media-icon opacity-05" src="assets/mail.png">
+            <img *ngIf="userBasicInfo.emailContact" matTooltip="{{userBasicInfo.emailContact}}" 
+              class="media-icon" src="assets/mail.png">
+              
+            <img *ngIf="!userBasicInfo.facebookContactUrl" matTooltip="Adresa contului de Facebook nu a fost completata" 
+              class="media-icon opacity-05" src="assets/fffff.png">
+            <a *ngIf="userBasicInfo.facebookContactUrl" href="{{userBasicInfo.facebookContactUrl}}" target="_blank">
+              <img matTooltip="{{userBasicInfo.facebookContactUrl}}" 
+                class="media-icon" src="assets/fffff.png">
+            </a>
+              
+            <img *ngIf="!userBasicInfo.instaContactUrl" matTooltip="Adresa contului de Instagram nu a fost completata" 
+              class="media-icon opacity-05" src="assets/instagram.png">
+            <a *ngIf="userBasicInfo.instaContactUrl" href="{{userBasicInfo.instaContactUrl}}" target="_blank">
+              <img matTooltip="{{userBasicInfo.instaContactUrl}}" 
+                class="media-icon" src="assets/instagram.png">
+            </a>
+          </div> -->
+  
+          <div style="height: 10px;"></div>
+  
+          <!-- <div class="profile-name-text">
+            {{userBasicInfo.firstName}} {{userBasicInfo.lastName}}
+          </div> -->
+          <div class="margin-top-10">
+              <button (click)="changeUserProfile()" mat-button>Modifica</button>
+          </div>
+  
+        </div>
+
+    </mat-tab>
+    <mat-tab label="Emisiuni urmarite">
+      <div style="padding: 10px 24px 24px 24px;">
+        <app-my-followings></app-my-followings>
+      </div>
+    </mat-tab>
+    <mat-tab label="Productiile mele">
+      <div style="padding: 10px 24px 24px 24px;">
+        <app-my-productions></app-my-productions>
+      </div>
+    </mat-tab>
+  </mat-tab-group>

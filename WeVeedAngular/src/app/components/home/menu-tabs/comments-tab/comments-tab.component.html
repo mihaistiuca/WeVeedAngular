@@ -1,0 +1,72 @@
+<!-- <h5 _ngcontent-c7="" class="text-center" style="font-weight: 100;">Comentarii</h5> -->
+
+<div style="padding: 10px;">
+    <div *ngIf="videoInfo">
+        <app-play-now-main-element [MainElementInfo]="videoInfo" [IsFromComments]="true"></app-play-now-main-element>
+    </div>
+    <app-loading-blocks-playing-now-main *ngIf="!videoInfo"></app-loading-blocks-playing-now-main>
+    <!-- <app-loading-blocks-playing-now-next *ngIf="!videoInfo"></app-loading-blocks-playing-now-next> -->
+</div>
+
+<div class="search-padding flex-align-center">
+    <img class="small-prod-thumb" [src]="currentUserInfo.profileImageUrl" *ngIf="currentUserInfo && currentUserInfo.profileImageUrl">
+    <span class="video-series-vid-title" *ngIf="currentUserInfo && currentUserInfo.userType == 'user'">
+        {{currentUserInfo.firstName}} {{currentUserInfo.lastName}}
+    </span>
+
+    <span class="video-series-vid-title" *ngIf="currentUserInfo && currentUserInfo.userType == 'producer'">
+        {{currentUserInfo.producerName}}
+    </span>
+</div>
+
+<div style="height: 3px;"></div>
+
+<div class="search-padding">
+    <div class="search-wrapper-comment">
+        <textarea [ngModel]="commentValue" (ngModelChange)="onChangeComment($event)" [maxLength]="500" class="search-input no-scrollbar prevent-enter-submit" type="text" 
+            [attr.disabled]="isSendCommentLoading ? '' : null"
+            (focus)="isFocusedOnComment = true"
+            placeholder="Scrie un comentariu pentru video-ul curent (max 500 caractere)"></textarea>
+        <!-- <fa-icon class="menu-type-icon search-icon" [class.comment-active]="commentValue" *ngIf="!isSendCommentLoading"
+            [icon]="['fas', 'comment']" (click)="clickComment()"
+            style="margin: 0 !important; padding: 20px; background: #252525;"></fa-icon> -->
+        <mat-spinner *ngIf="isSendCommentLoading" class="comment-loading-spinner">
+        </mat-spinner>
+    </div>
+    <div class="comment-command-wrapper" *ngIf="isFocusedOnComment">
+        <div (click)="isFocusedOnComment = false" class="comment-comment-cancel">
+            Renunta
+        </div>
+        <div>
+            <button (click)="clickComment()" class="style-ladda ladda-button" [ladda]="isSendCommentLoading"
+                [class.comment-comment-btn]="commentValue" [class.comment-comment-inactive]="!commentValue">
+                Comenteaza
+            </button>
+        </div>
+    </div>
+</div>
+
+<div style="height: 10px;"></div>
+
+<div id="commentsList" *ngIf="comments">
+    <perfect-scrollbar [config]="config">
+
+        <div class="font-11" style="color: #d6d6d6;">
+            comentarii recente
+        </div>
+        
+        <div style="height: 10px;"></div>
+        <app-comments-tab-comment *ngFor="let comment of comments" [comment]="comment"></app-comments-tab-comment>
+
+        <app-loading-blocks-comments *ngIf="moreCommentsAreLoading"></app-loading-blocks-comments>
+
+        <div class="font-11" style="color: #d6d6d6; text-align: center; margin-bottom: 20px;" *ngIf="!areThereAnyMoreComments">
+            Toate comentariile au fost incărcate
+        </div>
+
+        <div class="show-more-btn not-selectable" *ngIf="areThereAnyMoreComments" 
+            style="margin-bottom: 20px;" (click)="loadMoreComments()">
+            Incarcă mai multe
+        </div>
+    </perfect-scrollbar>
+</div>

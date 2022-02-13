@@ -1,0 +1,44 @@
+
+<div class="prod-warning-wrapper" *ngIf="router.url.endsWith('/account') && authService.isAuthenticated() && currentUserBasicInfo && currentUserBasicInfo.userType == 'producer' && !currentUserBasicInfo.isProducerValidatedByAdmin"
+    style="padding: 10px 24px; background-color: #102e4a;"
+    (click)="onClickViewConditions()">
+    <div class="text-center">
+        <fa-icon style="color: #d0d039;" class="font-size-20" [icon]="['fas', 'exclamation-circle']"></fa-icon>
+        Profilul tau de producator se afla in curs de validare.
+    </div>
+    <div class="text-center">
+        <a href="javascript:void(0)">Vezi conditiile de validare.</a>
+    </div>
+</div>
+
+<div *ngIf="currentUserBasicInfo && 
+    (currentUserBasicInfo.email == 'stiuca.mihai@yahoo.com' 
+        || currentUserBasicInfo.email == 'office@weveed.com'
+        || currentUserBasicInfo.email == 'cristian.cirstocea@yahoo.ro'
+        || currentUserBasicInfo.email == 'cristian.cirstocea7@gmail.com'
+        || currentUserBasicInfo.email == 'cristina.alexandru21@yahoo.com')"
+    style="padding: 20px 10px; border: 1px solid yellow;">
+    <div>
+        Acest mesaj trebuie sa apara doar pentru admini. Introdu id-ul producatorului pe care vrei sa il validezi. Contul lui se va valida si va primi un email.
+    </div>
+    <div>
+        <input type="checkbox" [(ngModel)]="checkBoxSendEmail" />
+        Trimite email producatorului
+    </div>
+    <input type="text" [ngModel]="producerIdToValidate" (ngModelChange)="onChangeValidationInput($event)" />
+    <button *ngIf="showValidateButton" (click)="clickValidate()">Valideaza</button>
+</div>
+
+<router-outlet></router-outlet>
+
+<div class="slider-footer">
+    <div class="footer-inner">
+        <a (click)="goToAboutUs()" class="float-left footer-btn text-left" href="javascript:void(0)">Despre noi</a>
+        <a (click)="goToTerms()" class="footer-btn" href="javascript:void(0)">Termeni si conditii</a>
+        <a *ngIf="authService.isAuthenticated()" 
+            class="float-right footer-btn text-right" 
+            href="javascript:void(0)" (click)="logout()">
+            Deconectare
+        </a>
+    </div>
+</div>

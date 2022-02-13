@@ -1,0 +1,9 @@
+<div class="page-wrapper">
+
+  <app-watch></app-watch>
+
+  <!-- <div id="mainSlider" *ngIf="!isMenuCollapsed" [@fadeInOut]> -->
+  <div id="mainSlider" class="op-1" [ngClass]="{'vis-hidden':isMenuCollapsed}" [@fadeInOut]="elementState">
+    <app-menu></app-menu>
+  </div>
+</div>

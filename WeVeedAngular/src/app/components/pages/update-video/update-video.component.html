@@ -1,0 +1,106 @@
+<!-- <perfect-scrollbar [config]="config" #formScroll> -->
+<perfect-scrollbar #formScroll>
+  
+  <div class="account-tab-info-inner-container">
+    <div class="menu-form-header">
+      <a (click)="goBack()" class="back-in-menu flex-1" href="javascript:void(0)">
+        <fa-icon class="" [icon]="['fas', 'chevron-left']" >
+        </fa-icon>
+        Inapoi
+      </a>
+      <h5 class="text-center font-18-slim" style="margin: 0;">Modifica video</h5>
+      <div class="flex-1"></div>
+    </div>
+
+    <app-loading-blocks-series-update *ngIf="!updateVideoForm"></app-loading-blocks-series-update>
+
+    <div *ngIf="updateVideoForm" class="menu-form-wrapper">
+      <form [formGroup]="updateVideoForm" autocomplete="off">
+          <mat-form-field class="">
+            <input matInput
+              placeholder="Titlul video-ului"
+              autocomplete="off" autofocus 
+              [formControl]="title">
+            <mat-error *ngIf="title.hasError('required')">
+              Titlul video-ului este <strong>obligatoriu</strong>
+            </mat-error>
+            <mat-error *ngIf="title.hasError('maxlength')">
+              Titlul video-ului trebuie sa aiba maxim <strong>70 de caractere</strong>
+            </mat-error>
+          </mat-form-field>
+        
+          <mat-form-field>
+            <!-- <perfect-scrollbar [config]="config"> -->
+            <perfect-scrollbar>
+              <textarea matTextareaAutosize matInput class="no-scrollbar prevent-enter-submit min-height-50 max-height-105" 
+                placeholder="Descriere video" [formControl]="description">
+              </textarea>
+            </perfect-scrollbar>
+            <mat-error *ngIf="description.hasError('required')">
+              Descrierea este <strong>obligatorie</strong>
+            </mat-error>
+            <mat-error *ngIf="description.hasError('maxlength')">
+              Maxim <strong>1000 de caractere</strong> acceptate
+            </mat-error>
+          </mat-form-field>
+          
+          <div style="height: 10px;"></div>
+
+          <div *ngIf="!videoDto.thumbnailUrl">
+            <label *ngIf="videoCoverImageEditableIsDisplayed" for="videoCoverUploader" class="add-cover-label transition-1s">
+              <fa-icon class="font-size-25 transition-1s" [icon]="['fas', 'camera']"></fa-icon>
+              <br>
+              <span>Adauga imaginea de coperta</span>
+              <br>
+              <span style="font-size: 12px;">Dimensiune recomandata: 240px x 135px</span>
+            </label>
+          </div>
+
+          <div *ngIf="videoDto.thumbnailUrl && videoCoverImageEditableIsDisplayed" class="text-center position-relative">
+            <img [src]="videoDto.thumbnailUrl" class="video-update-img">
+            <label for="videoCoverUploader" class="series-pic-change-wrapper">
+              <fa-icon class="font-size-25 transition-1s" [icon]="['fas', 'camera']"></fa-icon>
+            </label>
+          </div>
+
+          <input #videoCoverUploader class="display-none" id="videoCoverUploader" 
+            type="file" accept="image/png, image/jpeg" (change)="fileChangeEvent($event)" />
+          <div *ngIf="!videoCoverImageEditableIsDisplayed" class="image-cropper-wrapper cropper-create-series" style="width: 410px; margin: 0 auto;">
+            <div class="remove-image-icon-wrapper transition-1s" (click)="removeImage()">
+              <fa-icon class="remove-image-icon transition-1s" [icon]="['fas', 'times-circle']"></fa-icon>
+            </div>
+            <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="16 / 9"
+                [resizeToWidth]="480"
+                format="png"
+                (imageCroppedBase64)="imageCropped($event)"
+                (imageLoaded)="imageLoaded()"
+                (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+            
+            <div class="display-none">
+              <img class="cropper-image" [src]="croppedImage" />
+            </div>
+          </div>
+          <div *ngIf="!videoCoverImageEditableIsDisplayed" class="helper-grey-text text-center">
+            <div>Ajusteaza imaginea</div>
+          </div>
+      </form>
+
+      <div style="height: 20px;"></div>
+
+      <div class="flex-space-between">
+        <div class="flex-1">
+          <!-- <button (click)="backToProfile()" mat-button class="cancel-btn float-right">Renunta</button> -->
+        </div>
+        <div class="flex-1 text-center">
+          <button class="style-ladda" [ladda]="isFormSubmitting" (click)="submitUpdateForm()" mat-button>Modifica</button>
+        </div>
+        <div class="flex-1"></div>
+      </div>
+    </div>
+  </div>
+
+</perfect-scrollbar>

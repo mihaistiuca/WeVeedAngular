@@ -1,0 +1,165 @@
+
+<div class="series-wrapper">
+  <app-loading-blocks-producer-header *ngIf="isproducerLoading"></app-loading-blocks-producer-header>
+</div>
+
+<div *ngIf="!isproducerLoading" class="series-wrapper">
+
+  <div class="series-top-wrapper">
+  
+    <div class="paginator-producer-wrapper in-prod-page not-selectable">
+      <img *ngIf="producer.profileImageUrl" class="slider-image s-i-producer-page producer-border-radius slider-series-contur" [src]="producer.profileImageUrl">
+      <!-- <img *ngIf="!producer.profileImageUrl" class="slider-image s-i-producer-page producer-border-radius slider-series-contur-noimg" src="assets/no-prod.jpeg"> -->
+      <img *ngIf="!producer.profileImageUrl" class="slider-image s-i-producer producer-border-radius slider-series-contur-noimg" src="assets/person.png">
+    </div>
+
+    <div class="producer-highlights">
+      <div class="prod-highlight-wrapper">
+        <div class="producer-highlight">
+          <div class="view-details-value">{{producer.numberOfSeries}}</div>
+          <div class="view-details-expl">
+            <span *ngIf="producer.numberOfSeries == 1">Emisiune</span>
+            <span *ngIf="producer.numberOfSeries != 1">Emisiuni</span>
+          </div>
+        </div>
+        <div class="producer-highlight" [class.is-highlighted-header]="highlightEpisodesHeader"
+            (mouseenter)="highlightEpisodes = true;" (mouseleave)="highlightEpisodes = false;">
+          <div class="view-details-value">{{producer.numberOfSeriesEpisodes}}</div>
+          <div class="view-details-expl">
+            <span *ngIf="producer.numberOfSeriesEpisodes == 1">Episod</span>
+            <span *ngIf="producer.numberOfSeriesEpisodes != 1">Episoade</span>
+          </div>
+        </div>
+        <div class="producer-highlight">
+          <div class="view-details-value">{{producer.numberOfSeriesFollowers}}</div>
+          <div class="view-details-expl">
+            <span *ngIf="producer.numberOfSeriesFollowers == 1">Urmaritor</span>
+            <span *ngIf="producer.numberOfSeriesFollowers != 1">Urmaritori</span>
+          </div>
+        </div>
+        <!-- <div class="producer-highlight">
+              <img *ngIf="producer.emailContact" matTooltip="{{producer.emailContact}}" class="media-icon-prod media-icon-prod-in" src="assets/mail.png" style="display: inline-block;">
+            
+              <a *ngIf="producer.facebookContactUrl" href="{{producer.facebookContactUrl}}" target="_blank" class="media-icon-prod">
+                <img class="media-icon-prod-in" src="assets/fffff.png">
+              </a>
+              <img *ngIf="!producer.facebookContactUrl" matTooltip="Adresa contului de Facebook nu a fost completata" 
+                class="media-icon-prod media-icon-prod-in opacity-05" src="assets/fffff.png">
+                
+              <a *ngIf="producer.instaContactUrl" href="{{producer.instaContactUrl}}" target="_blank" class="media-icon-prod">
+                <img class="media-icon-prod-in" src="assets/instagram.png">
+              </a>
+              <img *ngIf="!producer.instaContactUrl" matTooltip="Adresa contului de Instagram nu a fost completata" 
+                class="media-icon-prod media-icon-prod-in opacity-05" src="assets/instagram.png">
+        </div> -->
+      </div>
+
+    </div>
+
+  </div>
+
+  <div style="height: 10px;"></div>
+
+  <div class="element-title-wrapper">
+    <div class="element-name-wrapper" style="display: flex;">
+      <span class="element-name font-series-title">
+        {{producer.producerName}}
+      </span>
+
+      <!-- <div class="media-icons-wrapper-prod">
+        <img *ngIf="producer.emailContact" matTooltip="{{producer.emailContact}}" class="media-icon margin-left-15" src="assets/mail.png">
+          
+        <a *ngIf="producer.facebookContactUrl" href="{{producer.facebookContactUrl}}" target="_blank" class="margin-left-15">
+          <img matTooltip="{{producer.facebookContactUrl}}" class="media-icon" src="assets/fffff.png">
+        </a>
+          
+        <a *ngIf="producer.instaContactUrl" href="{{producer.instaContactUrl}}" target="_blank" class="margin-left-15">
+          <img matTooltip="{{producer.instaContactUrl}}" class="media-icon" src="assets/instagram.png">
+        </a>
+      </div> -->
+
+    </div>
+  </div>
+
+  <div style="height: 10px;"></div>
+
+  <div [innerHTML]="producer.producerDescription | linkify" 
+    #producerDescription
+    (click)="clickOnDescription()"
+    [style.max-height]="!descriptionHasTheClass && (descScrollableHeight != 0) ? descScrollableHeight : ''"
+    [class.series-description]="descriptionHasTheClass"
+    class="font-14 white-space transition-height"></div>
+
+  <div *ngIf="isShowMoreDescriptionButtonVisible" class="show-more-btn not-selectable" (click)="showMoreDescription()">Arată mai mult</div>
+  <div *ngIf="isShowLessDescriptionButtonVisible" class="show-more-btn not-selectable" (click)="showLessDescription()">Arată mai puțin</div>
+  
+  <div style="margin-top: 10px;"></div>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div style="height: 5px;"></div>
+<div _ngcontent-c24="" style="border-bottom: 1px solid #464646;"></div>
+<div style="height: 10px;"></div>
+
+<div class="series-wrapper highlight-hover padding-tb-5">
+  <h5 class="section-title margin-bottom-0 not-selectable">Emisiuni</h5>
+
+  <div style="height: 5px;"></div>
+
+  <app-images-slider *ngIf="!isSeriesSliderLoading && sliderInfoSeries && sliderInfoSeries.elements && sliderInfoSeries.elements.length" 
+      [sliderInfo]="sliderInfoSeries"></app-images-slider>
+  
+  <div *ngIf="!isSeriesSliderLoading && (!sliderInfoSeries || !sliderInfoSeries.elements || !sliderInfoSeries.elements.length)" class="no-content-text">
+    <div>Acest producator nu are nicio emisiune momentan.</div>
+    <div style="height: 10px;"></div>
+  </div>
+  
+  <app-loading-block-slider-series *ngIf="isSeriesSliderLoading"></app-loading-block-slider-series>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div style="height: 5px;"></div>
+<div _ngcontent-c24="" style="border-bottom: 1px solid #464646;"></div>
+<div style="height: 10px;"></div>
+
+<div class="series-wrapper highlight-hover padding-tb-5" [class.is-highlighted]="highlightEpisodes"
+    (mouseenter)="highlightEpisodesHeader = true;" (mouseleave)="highlightEpisodesHeader = false;">
+  <h5 class="section-title margin-bottom-0 not-selectable">Cele mai populare episoade</h5>
+
+  <div style="height: 10px;"></div>
+
+  <app-images-slider *ngIf="!isSliderMostViewedVideoLoading && sliderMostViewedVideo && sliderMostViewedVideo.elements && sliderMostViewedVideo.elements.length" 
+      [sliderInfo]="sliderMostViewedVideo"></app-images-slider>
+      
+  <div *ngIf="!isSliderMostViewedVideoLoading && (!sliderMostViewedVideo || !sliderMostViewedVideo.elements || !sliderMostViewedVideo.elements.length)" class="no-content-text">
+    <div>Acest producator nu are niciun video momentan.</div>
+    <div style="height: 10px;"></div>
+  </div>
+  
+  <app-loading-blocks-slider *ngIf="isSliderMostViewedVideoLoading"></app-loading-blocks-slider>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------------------------------------------------- -->
+
+<div style="margin-top: 20px;"></div>
+
+<div class="series-wrapper" *ngIf="videoPaginatorInfo && videoPaginatorInfo.halfCardElements && videoPaginatorInfo.halfCardElements.length"
+    (mouseenter)="highlightEpisodesHeader = true;" (mouseleave)="highlightEpisodesHeader = false;"
+    [class.is-highlighted]="highlightEpisodes">
+  <h5 class="font-16 section-title margin-bottom-0 not-selectable">Toate episoadele</h5>
+
+  <div style="height: 5px;"></div>
+
+  <app-video-paginator [paginatorInfo]="videoPaginatorInfo"></app-video-paginator>
+  
+  <app-loading-blocks-paginator *ngIf="moreVideosAreLoading"></app-loading-blocks-paginator>
+  
+  <div *ngIf="!areThereAnyMoreVideos" class="no-content-text">
+    Lista incarcata complet
+  </div>
+
+  <div style="height: 40px;"></div>
+  
+</div>

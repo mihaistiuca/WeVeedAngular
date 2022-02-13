@@ -1,0 +1,20 @@
+<div (click)="closeNotification()" class="notification-wrapper">
+
+  <fa-icon *ngIf="data.type == 'success'" class="notification-icon success"
+    [icon]="['fas', 'check-circle']">
+  </fa-icon>
+
+  <fa-icon *ngIf="data.type == 'fail'" class="notification-icon fail"
+    [icon]="['fas', 'exclamation-circle']">
+  </fa-icon>
+
+  <fa-icon *ngIf="data.type == 'info'" class="notification-icon info"
+    [icon]="['fas', 'info-circle']">
+  </fa-icon>
+
+  <span>{{data.text}}</span>
+
+  <fa-icon style="margin-left: 20px;" class="notification-icon"
+    [icon]="['fas', 'times']">
+  </fa-icon>
+</div>

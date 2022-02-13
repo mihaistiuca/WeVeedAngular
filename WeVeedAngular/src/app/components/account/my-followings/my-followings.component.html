@@ -1,0 +1,50 @@
+<div *ngFor="let element of series; let indexE = index" class="series-list-wrapper">
+  <div class="display-flex series-list-hover" (click)="navigateToSeries(element.id)">
+    <div class="slider-image-wrapper-list not-selectable" (click)="redirectTo(element.redirectUrl)">
+      <div class="inner">
+        <img *ngIf="element.producerProfileImageUrl && !(indexE == currentIndex + 2)" class="prod-series-img" [src]="element.producerProfileImageUrl">
+
+        <img *ngIf="element.thumbnailUrl" class="slider-image s-i-series series-border-radius slider-series-contur" [src]="element.thumbnailUrl">
+        <img *ngIf="!element.thumbnailUrl" class="slider-image s-i-series series-border-radius slider-series-contur" src="assets/noimgseries.jpeg">
+
+        <span class="app-chip slider-element-chip position-slider-category">{{element.category}}</span>
+        <div class="app-chip slider-element-chip position-slider-followers" matTooltip="Emisiune urmarita de {{element.followersCount}} WeVeed-eri">
+          <span class="font-11">
+            {{element.followersCount | number}} 
+            <span *ngIf="element.followersCount != 1">urmaritori</span>
+            <span *ngIf="element.followersCount == 1">urmaritor</span>
+          </span>
+          <!-- <fa-icon class="icon-small-follow" [icon]="['fas', 'user']"></fa-icon> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="series-right-info">
+      <div class="series-list-name">
+        {{element.name}}
+      </div>
+      <div style="height: 8px;"></div>
+      <span class="series-list-desc">
+        {{element.description}}
+      </span>
+      <div style="height: 8px;"></div>
+      <div class="series-list-se">
+        <span>{{element.lastSeason}} </span>
+        <span *ngIf="element.lastSeason != 1">Sezoane </span>
+        <span *ngIf="element.lastSeason == 1">Sezon </span>
+        <span>{{element.episodesCount}} </span>
+        <span *ngIf="element.episodesCount != 1">Episoade</span>
+        <span *ngIf="element.episodesCount == 1">Episod</span>
+      </div>
+    </div>
+  </div>
+  <div style="height: 20px;"></div>
+</div>
+
+<app-loading-blocks-my-followings *ngIf="isMySeriesRequestLoading"></app-loading-blocks-my-followings>
+
+<div *ngIf="!isMySeriesRequestLoading && (!series || !series.length)" style="height: 20px;"></div>
+<div *ngIf="!isMySeriesRequestLoading && (!series || !series.length)" class="no-content-text">Nu urmaresti nicio emisiune.</div>
+<div style="text-align: center;" *ngIf="!isMySeriesRequestLoading && (!series || !series.length)">
+  <a href="javascript:void(0)" style="text-align: center;" (click)="goToDiscover()">Mergi la pagina Descopera</a>
+</div>

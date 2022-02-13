@@ -1,0 +1,71 @@
+<div class="menu-header-holder">
+  <!-- <a [class.active]="selectedTab == 'playnow'" (click)='selectFromMenu("playnow")' class="menu-selector">
+    <fa-icon class="menu-type-icon" [icon]="['fas', 'play-circle']"></fa-icon>
+  </a>
+
+  <a [class.active]="selectedTab == 'comments'" (click)='selectFromMenu("chat")' class="menu-selector">
+    <fa-icon class="menu-type-icon" [icon]="['fas', 'comments']"></fa-icon>
+  </a>
+
+  <a [class.active]="selectedTab == 'channels'" (click)='selectFromMenu("channels")' class="menu-selector">
+    <fa-icon class="menu-type-icon" [icon]="['fas', 'th']"></fa-icon>
+  </a>
+
+  <a [class.active]="selectedTab == 'search'" (click)='selectFromMenu("search")' class="menu-selector">
+    <fa-icon class="menu-type-icon" [icon]="['fas', 'search']"></fa-icon>
+  </a>
+
+  <a [class.active]="selectedTab == 'account'" (click)='selectFromMenu("account")' class="menu-selector">
+    <fa-icon *ngIf="!userProfileImageUrl" class="menu-type-icon" [icon]="['fas', 'user-circle']"></fa-icon>
+    <div *ngIf="userProfileImageUrl">
+      <img class="icon-img" [src]="userProfileImageUrl">
+    </div>
+  </a> -->
+
+  <a class="menu-selector" routerLink="playnow" routerLinkActive="active">
+    <fa-icon class="menu-type-icon" [icon]="['fas', 'play-circle']"></fa-icon>
+    <span style="font-size: 14px;">
+      Rulează acum
+    </span>
+  </a>
+
+  <a class="menu-selector" routerLink="comments" routerLinkActive="active">
+    <fa-icon class="menu-type-icon" [icon]="['fas', 'comments']"></fa-icon>
+    <span style="font-size: 14px;">
+      Comentarii
+    </span>
+  </a>
+
+  <a class="menu-selector" routerLink="channels" routerLinkActive="active">
+    <fa-icon class="menu-type-icon" [icon]="['fas', 'th']"></fa-icon>
+    <span style="font-size: 14px;">
+      Canale
+    </span>
+  </a>
+
+  <a class="menu-selector" routerLink="search" routerLinkActive="active">
+    <fa-icon class="menu-type-icon" [icon]="['fas', 'search']"></fa-icon>
+    <span style="font-size: 14px;">
+      Descoperă
+    </span>
+  </a>
+
+  <a class="menu-selector" routerLink="account" routerLinkActive="active">
+    <img *ngIf="!userProfileImageUrl" src="assets/person.png" class="img-prof" />
+    <!-- <fa-icon *ngIf="!userProfileImageUrl" class="menu-type-icon" [icon]="['fas', 'user-circle']"></fa-icon> -->
+    <img *ngIf="userProfileImageUrl" class="icon-img img-prof" [src]="userProfileImageUrl">
+    <span style="font-size: 14px; margin-top: 2px;">
+      Contul meu
+    </span>
+  </a>
+
+</div>
+
+<div class="menu-tabs-content" (scroll)="scrollHandler($event)">
+    <router-outlet></router-outlet>
+  <!-- <app-playnow-tab *ngIf="selectedTab == 'playnow'"></app-playnow-tab>
+  <app-comments-tab *ngIf="selectedTab == 'comments'"></app-comments-tab>
+  <app-channels-tab *ngIf="selectedTab == 'channels'"></app-channels-tab>
+  <app-search-tab *ngIf="selectedTab == 'search'"></app-search-tab>
+  <app-account-tab *ngIf="selectedTab == 'account'"></app-account-tab> -->
+</div>

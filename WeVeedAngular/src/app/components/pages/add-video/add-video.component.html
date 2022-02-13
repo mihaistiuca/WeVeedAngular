@@ -1,0 +1,298 @@
+
+<canvas #canvas class="display-none"></canvas>
+
+<div class="menu-form-header" *ngIf="!videoIsSelected">
+    <a (click)="backToProfile()" class="back-in-menu flex-1" href="javascript:void(0)">
+        <fa-icon class="" [icon]="['fas', 'chevron-left']" >
+        </fa-icon>
+        <!-- Inapoi la profil -->
+    </a>
+    <h5 _ngcontent-c10="" class="text-center font-18-slim add-video-title" *ngIf="!videoIsSelected">
+        <span>Adauga episod</span>
+        <span *ngIf="selectedSeries"> in emisiunea </span>
+        <span *ngIf="selectedSeries" class="weveed-element-color">{{selectedSeries.name}}</span>
+    </h5>
+    <div class="flex-1"></div>
+</div>
+
+<div class="select-series-wrapper" *ngIf="!paramSeriesId && !videoIsSelected && !allSeriesRequestLoading">
+    <ng-select [items]="allSeries" [@changeDivSize]=seriesCurrentState
+        class="select-series"
+        bindLabel="name"
+        bindValue="name"
+        placeholder="Selecteaza emisiunea in care vei adauga episodul (Obligatoriu)"
+        (change)="selectSeries($event)">
+
+        <ng-template ng-option-tmp let-item="item" let-index="index">
+            <img class="select-inner-img" [src]="item.thumbnailUrl"/>
+            <b>{{item.name}}</b>
+        </ng-template>
+    </ng-select>
+    <fa-icon class="icon-upload select-warning-sign" [icon]="['fas', 'exclamation']" *ngIf="!selectedSeries" [@fadeInOut]
+        matTooltip="Selectarea unei emisiuni este obligatorie."></fa-icon>
+</div>
+
+<div class="no-series-message" *ngIf="!allSeriesRequestLoading && !(allSeries && allSeries.length) && !selectedSeries">
+    Pentru a adauga un episod ai nevoie de o emisiune.
+    <a href="javascript:void(0)" (click)="goToCreateSeries()">
+        Mergi la Creeaza Emisiune
+    </a>
+</div>
+
+<div style="height: 36px; margin-top: 4%; padding: 0 40px;" *ngIf="allSeriesRequestLoading && !paramSeriesId">
+    <div style="height: 100%; width: 100%;" class="animated-background"></div>
+</div>
+
+<div class="drop-zone-wrapper" *ngIf="!videoIsSelected">
+    <div class="upload-overlay" *ngIf="!selectedSeries"></div>
+    <div (click)="add(null)" class="drop-zone-inner-wrapper" [class.zone-blurred]="!selectedSeries">
+        <file-drop (onFileDrop)="dropped($event)" 
+            (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+
+            <div class="upload-background"></div>
+            <div class="icon-upload-wrapper">
+                <fa-icon class="icon-xxl-size icon-upload" [icon]="['fas', 'cloud-upload-alt']"></fa-icon>
+            </div>
+            <div class="font-14">
+                Selecteaza un fisier video
+            </div>
+            <div class="font-13 upload-extra-text">
+                Sau trage si elibereaza un fisier
+            </div>
+            <div class="font-13 upload-extra-text">
+                Fisiere recomandate: <span style="color: white;">.mp4, .mov</span>
+            </div>
+        </file-drop>
+    </div>
+</div>
+
+<perfect-scrollbar [config]="config" #formScroll *ngIf="videoIsSelected">
+    
+<!-- <h5 _ngcontent-c10="" class="text-center font-18-slim add-video-title" *ngIf="videoIsSelected">
+    <span>Adauga video</span>
+    <span *ngIf="selectedSeries"> in emisiunea </span>
+    <span *ngIf="selectedSeries" class="weveed-element-color">{{selectedSeries.name}}</span>
+</h5> -->
+
+<div class="menu-form-header" *ngIf="videoIsSelected">
+    <a (click)="backToProfile()" class="back-in-menu flex-1" href="javascript:void(0)">
+        <fa-icon class="" [icon]="['fas', 'chevron-left']" >
+        </fa-icon>
+        <!-- Inapoi la profil -->
+    </a>
+    <h5 _ngcontent-c10="" class="text-center font-18-slim add-video-title">
+        <span>Adauga episod</span>
+        <span *ngIf="selectedSeries"> in emisiunea </span>
+        <span *ngIf="selectedSeries" class="weveed-element-color">{{selectedSeries.name}}</span>
+    </h5>
+    <div class="flex-1"></div>
+</div>
+
+<div class="thumbs-wrapper" *ngIf="videoIsSelected">
+
+    <div style="height: 15px;"></div>
+    <div class="add-explain-text">
+        Selecteaza o coperta pentru episodul tau
+    </div>
+    <div class="thumbs-inner-wrapper">
+        <div class="video-thumb-container" *ngIf="thumbnailData1">
+            <img [class.not-selected]="!thumbnail1IsSelected" class="video-thumb" [src]="thumbnailData1" (click)="chooseThumbnail('thumbnail1IsSelected', 'thumbnailData1')" />
+            <div *ngIf="thumbnail1IsSelected" class="check-wrapper wrapper-elements-center">
+                <fa-icon class="icon-large-size" [icon]="['fas', 'check-circle']">
+                </fa-icon>
+            </div>
+        </div>
+
+        <div class="video-thumb-container" *ngIf="thumbnailData2">
+            <img [class.not-selected]="!thumbnail2IsSelected" class="video-thumb" [src]="thumbnailData2" (click)="chooseThumbnail('thumbnail2IsSelected', 'thumbnailData2')" />
+            <div *ngIf="thumbnail2IsSelected" class="check-wrapper wrapper-elements-center">
+                <fa-icon class="icon-large-size" [icon]="['fas', 'check-circle']">
+                </fa-icon>
+            </div>
+        </div>
+
+        <div class="video-thumb-container" *ngIf="thumbnailData3">
+            <img [class.not-selected]="!thumbnail3IsSelected" class="video-thumb" [src]="thumbnailData3" (click)="chooseThumbnail('thumbnail3IsSelected', 'thumbnailData3')" />
+            <div *ngIf="thumbnail3IsSelected" class="check-wrapper wrapper-elements-center">
+                <fa-icon class="icon-large-size" [icon]="['fas', 'check-circle']">
+                </fa-icon>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 10px"></div>
+
+    <div class="thumbs-inner-wrapper">
+        <div class="video-thumb-container" *ngIf="thumbnailData4">
+            <img [class.not-selected]="!thumbnail4IsSelected" class="video-thumb" [src]="thumbnailData4" (click)="chooseThumbnail('thumbnail4IsSelected', 'thumbnailData4')" />
+            <div *ngIf="thumbnail4IsSelected" class="check-wrapper wrapper-elements-center">
+                <fa-icon class="icon-large-size" [icon]="['fas', 'check-circle']">
+                </fa-icon>
+            </div>
+        </div>
+
+        <div class="video-thumb-container" *ngIf="thumbnailData5">
+            <img [class.not-selected]="!thumbnail5IsSelected" class="video-thumb" [src]="thumbnailData5" (click)="chooseThumbnail('thumbnail5IsSelected', 'thumbnailData5')" />
+            <div *ngIf="thumbnail5IsSelected" class="check-wrapper wrapper-elements-center">
+                <fa-icon class="icon-large-size" [icon]="['fas', 'check-circle']">
+                </fa-icon>
+            </div>
+        </div>
+
+        <div class="video-thumb-container" *ngIf="thumbnailData6">
+            <img [class.not-selected]="!thumbnail6IsSelected" class="video-thumb" [src]="thumbnailData6" (click)="chooseThumbnail('thumbnail6IsSelected', 'thumbnailData6')" />
+            <div *ngIf="thumbnail6IsSelected" class="check-wrapper wrapper-elements-center">
+                <fa-icon class="icon-large-size" [icon]="['fas', 'check-circle']">
+                </fa-icon>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 10px;"></div>
+    <div class="add-explain-text">
+        sau
+    </div>
+    <div style="height: 5px;"></div>
+
+    <label *ngIf="seriesCoverImageEditableIsDisplayed" for="seriesCoverUploader" class="add-cover-label transition-1s">
+      <fa-icon class="font-size-25 transition-1s" [icon]="['fas', 'camera']"></fa-icon>
+      <br>
+      <span>Incarca o imagine de coperta noua</span>
+      <br>
+      <span style="font-size: 12px;">Dimensiune recomandata: 238px x 130px</span>
+    </label>
+
+    <div style="width: 60%; margin: 0 auto;">
+        <input #imageInputCover class="display-none" id="seriesCoverUploader" 
+        type="file" accept="image/png, image/jpeg" (change)="fileChangeEvent($event)" />
+        <div *ngIf="!seriesCoverImageEditableIsDisplayed" class="image-cropper-wrapper cropper-add-video">
+            <div class="remove-image-icon-wrapper transition-1s" (click)="removeImage()">
+                <fa-icon class="remove-image-icon transition-1s" [icon]="['fas', 'times-circle']"></fa-icon>
+            </div>
+            <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="16 / 9"
+                [resizeToWidth]="480"
+                format="png"
+                (imageCroppedBase64)="imageCropped($event)"
+                (imageLoaded)="imageLoaded()"
+                (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+            
+            <div class="display-none">
+                <img class="cropper-image" [src]="croppedImage" />
+            </div>
+        </div>
+        <div *ngIf="!seriesCoverImageEditableIsDisplayed" class="helper-grey-text text-center">
+            <div>Ajusteaza imaginea</div>
+        </div>
+    </div>
+
+    <div style="height: 15px;"></div>
+    <div class="add-explain-text">
+        Completeaza informatiile
+    </div>
+    
+    <div *ngIf="selectedSeries" style="width: 50%;">
+        <mat-form-field>
+            <mat-select placeholder="Selecteaza sezonul si episodul" 
+                [(value)]="selectedEpisodeSeriesChoice" [compareWith]="compareFn" [disabled]="episodeSeriesChoices.length == 1">
+                <mat-option *ngFor="let choice of episodeSeriesChoices" [value]="choice">Sezonul {{choice.nextSeason}} / Episodul {{choice.nextEpisode}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <form [formGroup]="addVideoForm" autocomplete="off" (keydown)="keyDownFunctionOnForm($event)">
+            <mat-form-field>
+                <input matInput placeholder="Titlu video" [formControl]="title" >
+                <mat-error *ngIf="title.hasError('required')">
+                    Titlul episodului este <strong>obligatoriu</strong>
+                </mat-error>
+                <mat-error *ngIf="title.hasError('maxlength')">
+                    Maxim <strong>70 de caractere</strong> acceptate
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <perfect-scrollbar [config]="config">
+                    <textarea matTextareaAutosize matInput class="no-scrollbar prevent-enter-submit min-height-50 max-height-105" 
+                        placeholder="Descriere video" [formControl]="description">
+                    </textarea>
+                </perfect-scrollbar>
+                <mat-error *ngIf="description.hasError('maxlength')">
+                    Maxim <strong>1000 de caractere</strong> acceptate
+                </mat-error>
+            </mat-form-field>
+    </form>
+
+    <div style="height: 20px;"></div>
+
+    <div class="flex-space-between">
+      <div class="flex-1">
+        <button (click)="backToProfile()" mat-button class="cancel-btn float-right">Renunta</button>
+      </div>
+      <div class="flex-1 text-center">
+        <button class="style-ladda" [ladda]="isFormSubmitting" (click)="uploadVideoAndSubmit()" mat-button>Incarca</button>
+      </div>
+      <div class="flex-1"></div>
+    </div>
+</div>
+</perfect-scrollbar>
+
+<div class="loading-wrapper" *ngIf="isFormSubmitting">
+    <div class="loading-inner">
+        <div *ngIf="loadingVideoProgressVisible">
+            <div class="text-center font-18-slim wrapper-elements-center">
+                <span>Video-ul tau e in drum spre noi </span>
+                <img src="assets/in-love.png" class="intext-icon"/>
+            </div>
+            <div style="margin-bottom: 5px;"></div>
+            <div class="text-center font-14 font-slimm">
+                Te rugam sa astepti
+            </div>
+            <div style="margin-bottom: 15px;"></div>
+            <mat-progress-bar mode="determinate" [value]="loadingVideoPercentage"></mat-progress-bar>
+        </div>
+        
+        <div *ngIf="loadingThumbnailProgressVisible">
+            <div class="text-center font-18-slim wrapper-elements-center">
+                Coperta episodului tau se incarca
+            </div>
+            <div style="margin-bottom: 10px;"></div>
+            <div class="text-center font-14 font-slimm">
+                Te rugam sa astepti
+            </div>
+            <div style="margin-bottom: 15px;"></div>
+            <mat-progress-bar mode="determinate" [value]="loadingThumbnailPercentage"></mat-progress-bar>
+        </div>
+        
+        <div *ngIf="loadingFormSubmitVisible">
+            <div class="text-center font-18-slim wrapper-elements-center">
+                Informatiile despre episodul tau se incarca
+            </div>
+            <div style="margin-bottom: 10px;"></div>
+            <div class="text-center font-14 font-slimm">
+                Te rugam sa astepti
+            </div>
+            <div style="margin-bottom: 15px;"></div>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+    </div>
+</div>
+
+<div class="loading-wrapper" *ngIf="isSelectionLoading">
+    <div class="loading-inner">
+        <div *ngIf="loadingVideoProgressVisible">
+            <div class="text-center font-18-slim wrapper-elements-center">
+                <span>Video-ul tau este procesat local</span>
+            </div>
+            <div style="margin-bottom: 5px;"></div>
+            <div class="text-center font-14 font-slimm">
+                Te rugam sa astepti
+            </div>
+            <div style="margin-bottom: 15px;"></div>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+    </div>
+</div>

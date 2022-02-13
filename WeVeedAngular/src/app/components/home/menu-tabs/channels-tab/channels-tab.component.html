@@ -1,0 +1,60 @@
+
+<perfect-scrollbar [config]="config">
+<h5 class="text-center font-18-slim"></h5>
+
+
+
+<div *ngFor="let channelConfig of channelsConfig">
+
+  <app-channel-hor-list [channelConfig]="channelConfig" [sliderVideosInfo]="sliderVideosInfos[channelConfig.name]" 
+    [isChannelVideosLoading]="isChannelVideosLoading">
+  </app-channel-hor-list>
+
+</div>
+
+
+<!-- <div class="channel-holder" style="position: relative;">
+  <div id="myChannelCopy"></div>
+  <div class="channel-menu-item" id="myChannel" (click)="playMyChannel()">
+    
+    <div style="height: 21px;"></div>
+
+    <div style="visibility: hidden;">
+      CANALUL MEU
+    </div>
+
+    <img *ngIf="userBasicInfo && userBasicInfo.profileImageUrl" [src]="userBasicInfo.profileImageUrl" class="image-on-channel"/>
+    <img *ngIf="!userBasicInfo || !userBasicInfo.profileImageUrl" src="assets/person.png" class="image-on-channel"/>
+    
+
+    <div style="position: absolute;">
+      CANALUL MEU
+    </div>
+
+    <div class="access-channel">
+      <fa-icon class="play-channel" [icon]="['fas', 'play']"></fa-icon>
+      <span>Acces canal</span>
+    </div>
+  </div>
+
+</div> -->
+
+<!-- <div *ngFor="let channelConfig of channelsConfig" class="channel-holder">
+  <div class="generic-copy-wrapper">
+    <div [attr.id]="channelConfig.name + 'ChannelCopy'" class="generic-channel-copy"></div>
+  </div>
+  <div class="channel-menu-item" [attr.id]="channelConfig.name + 'Channel'" (click)="navigateInPlayerTo(channelConfig.name)">
+    
+    <div style="height: 21px;"></div>
+
+    <div>{{channelConfig.thumbnailText}}</div>
+
+    <div class="access-channel">
+      <fa-icon class="play-channel" [icon]="['fas', 'play']"></fa-icon>
+      <span>Acces canal</span>
+    </div>
+  </div>
+</div> -->
+
+<div style="height: 20px;"></div>
+</perfect-scrollbar>

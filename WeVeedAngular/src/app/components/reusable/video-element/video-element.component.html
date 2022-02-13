@@ -1,0 +1,51 @@
+
+<img *ngIf="video.imgSrc" [class.opacity-05]="!video.wasEncoded" 
+  class="paginator-image video-border-radius slider-video-contur" [src]="video.imgSrc">
+<img *ngIf="!video.imgSrc" class="paginator-image video-border-radius slider-video-contur" src="assets/noimgseries.jpeg">
+
+<div (click)="navigateSingleInPlayerTo(video.id)" class="paginator-image-overlay video-border-radius"></div>
+
+<!-- <div *ngIf="video.parentSeriesThumbnailUrl" class="app-chip paginator slider-element-chip position-slider-category-paginator" style="padding-left: 5px;">
+  <img *ngIf="video.parentSeriesThumbnailUrl" class="series-vid-img" [src]="video.parentSeriesThumbnailUrl" style="height: 10px;">
+  <span>S{{video.season}}/E{{video.episode}}</span>
+</div> -->
+
+<!-- <fa-icon (click)="navigateSingleInPlayerTo(video.id)" *ngIf="!video.videoBelongsToCurrentUser" class="icon-small-size play-video-icon" [icon]="['fas', 'play']"></fa-icon> -->
+
+
+<!-- if video belongs to current user -->
+<img *ngIf="video.videoBelongsToCurrentUser && video.wasEncoded" src="assets/play.png" (click)="navigateInPlayerTo(video.id)"
+  class="hover-zoom play-video-icon not-selectable for-play">
+
+<img *ngIf="video.videoBelongsToCurrentUser && video.wasEncoded" src="assets/edit.png" (click)="navigateInSlider(video.updateVideoPageUrl)"
+  class="hover-zoom play-video-icon not-selectable for-edit">
+
+<img *ngIf="video.videoBelongsToCurrentUser && video.wasEncoded" src="assets/delete.png" (click)="navigateInSlider(video.deleteVideoPageUrl)"
+  class="hover-zoom play-video-icon not-selectable for-delete">
+<!-- -------------------------------- -->
+
+<div (click)="navigateSingleInPlayerTo(video.id)" class="app-chip paginator slider-element-chip position-slider-followers-paginator">
+  {{video.numberOfViews | number}} 
+  <span *ngIf="video.numberOfViews != 1">vizionari</span>
+  <span *ngIf="video.numberOfViews == 1">vizionare</span>
+  <!-- <fa-icon class="icon-small-size" [icon]="['fas', 'eye']"></fa-icon> -->
+</div>
+
+<div (click)="navigateSingleInPlayerTo(video.id)" class="app-chip paginator slider-element-chip position-slider-duration-paginator">
+  {{video.length | wvdduration }}
+</div>
+
+<div class="slider-image-text video-border-radius" (click)="navigateSingleInPlayerTo(video.id)">
+  <div class="one-row-clamp video-series-title-paginator">
+    <!-- <img *ngIf="video.parentSeriesThumbnailUrl" class="series-vid-img" [src]="video.parentSeriesThumbnailUrl" style="height: 15px;"> -->
+    <span [title]="video.parentSeriesName">{{video.parentSeriesName}}</span>
+  </div>
+  <div class="two-rows-clamp video-title-paginator">S{{video.season}} E{{video.episode}}: {{video.name}}</div>
+</div>
+
+<!-- IMPORTANT - IF THE VIDEO HAS NOT BEEN ENCODED YET - SHOW YELLOW WARNING MESSAGEW  -->
+<!-- <div class="not-encoded-warning" *ngIf="!video.wasEncoded">
+  <div>Acest video este in curs de procesare</div>
+  <div>In cateva minute episodul va fi disponibil</div>
+
+</div> -->

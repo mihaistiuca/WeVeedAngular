@@ -1,0 +1,36 @@
+
+<video *ngIf="videoWatchDto && !isRequestLoading" 
+  id="videoPlayerId"
+  class="video-js vjs-big-play-centered vjs-default-skin"
+  controls
+  preload="auto"
+  style="width: 100%; height: 100%; cursor: auto;"
+  >
+  <source [src]="videoWatchDto.videoUrl" type="video/mp4">
+</video>
+
+<img class="video-loading" src="assets/giphy.gif" *ngIf="isRequestLoading">
+
+<div class="wrapper-elements-center error-wrapper" style="z-index: 12;" *ngIf="isResourceNotFound || isSomethingWentWrong">
+  <fa-icon class="watch-not-found"
+    [icon]="['fas', 'exclamation-circle']">
+  </fa-icon>
+  <div class="watch-not-found-text" *ngIf="isResourceNotFound">
+    Resursa nu a fost gasita. <a href="javascript:void(0)" (click)="goToGeneralChanngel()">Mergi la Canalul General</a>
+  </div>
+  <div class="watch-not-found-text" *ngIf="isSomethingWentWrong">
+    Ceva nu a mers bine. <a href="javascript:void(0)" (click)="goToGeneralChanngel()">Mergi la Canalul General</a>
+  </div>
+</div>
+
+<div class="video-btns play-video not-selectable"
+    (click)="clickOverlay()"
+    *ngIf="showPlayBtn">
+        <img src="assets/play.png" class="icons-dims hover-zoom-wide centered-absolute not-selectable">
+</div>
+
+<div class="mock-overlay"
+  (click)="clickMock()"
+  (mouseenter)="mouseEnterMock()" 
+  (mouseleave)="mouseLeaveMock()"
+  (mousemove)="mouseMoveMock()"></div>

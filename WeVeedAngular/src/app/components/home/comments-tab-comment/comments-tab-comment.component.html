@@ -1,0 +1,70 @@
+<div class="comment-wrapper" *ngIf="!commentWasDeleted && !commentIsInEditMode">
+    <div class="display-flex-center">
+        <img class="small-prod-thumb" *ngIf="comment.userProfileImageUrl && !comment.userIsProducer" [src]="comment.userProfileImageUrl">
+
+        <span *ngIf="!comment.userIsProducer" class="video-series-vid-title">
+            {{comment.userName}}
+        </span>
+
+        <a *ngIf="comment.userIsProducer" href="javascript:void(0)" class="flex-align-center" (click)="goToProducer(comment.userId)">
+            <img class="small-prod-thumb" [src]="comment.userProfileImageUrl" *ngIf="comment.userProfileImageUrl">
+            <span style="font-size: 13px;">{{comment.userName}}</span>
+        </a>
+
+        <span class="video-series-vid-title">
+            <span>&nbsp;-</span>
+            {{comment.commentTime | timeAgo}}
+        </span>
+
+    </div>
+    <div style="padding-left: 17px; padding-right: 10px;">
+
+        <div [innerHTML]="comment.text | linkify"
+            #commentText
+            (click)="clickOnComment()"
+            [style.max-height]="!commentHasTheClass && (commentScrollableHeight != '0px') ? commentScrollableHeight : ''"
+            [class.comment-text]="commentHasTheClass"
+            style="word-wrap: break-word;"
+            class="white-space transition-height"></div>
+
+        <div *ngIf="isShowMoreCommentButtonVisible" class="show-more-comment not-selectable" (click)="showMoreComment()">Citeste mai mult</div>
+        <div *ngIf="isShowLessCommentButtonVisible" class="show-more-comment not-selectable" (click)="showLessComment()">Citeste mai putin</div>
+
+    </div>
+
+    <div [matMenuTriggerFor]="menu" *ngIf="commentBelongsToUser && !isDeleteCommentLoading" class="comment-menu">
+        <fa-icon class="menu-type-icon" [icon]="['fas', 'ellipsis-v']"></fa-icon>
+
+        <mat-menu #menu="matMenu">
+            <button (click)="editComment()" mat-menu-item>Modifica</button>
+            <button (click)="deleteComment()" mat-menu-item>Sterge</button>
+        </mat-menu>
+    </div>
+    
+    <mat-spinner *ngIf="isDeleteCommentLoading" class="field-loading-spinner">
+    </mat-spinner>
+</div>
+
+<div *ngIf="commentBelongsToUser && commentIsInEditMode">
+    <div class="search-wrapper-comment">
+        <textarea [ngModel]="commentedUpdatedValue" (ngModelChange)="onChangeComment($event)" [maxLength]="500" class="search-input no-scrollbar prevent-enter-submit" type="text" 
+            [attr.disabled]="isSendCommentLoading ? '' : null"
+            (focus)="isFocusedOnComment = true"
+            placeholder="Scrie un comentariu pentru video-ul curent (max 500 caractere)"></textarea>
+        <mat-spinner *ngIf="isSendCommentLoading" class="comment-loading-spinner">
+        </mat-spinner>
+    </div>
+    <div class="comment-command-wrapper">
+        <div (click)="commentIsInEditMode = false" class="comment-comment-cancel">
+            Renunta
+        </div>
+        <div>
+            <button (click)="clickComment()" class="style-ladda ladda-button" [ladda]="isSendCommentLoading"
+                [class.comment-comment-btn]="commentedUpdatedValue" [class.comment-comment-inactive]="!commentedUpdatedValue">
+                Comenteaza
+            </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!commentWasDeleted" style="height: 5px;"></div>

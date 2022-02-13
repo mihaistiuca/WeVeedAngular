@@ -1,0 +1,236 @@
+<div [ngClass]="{'main-form-wrapper': !isOpenFromSidebar, 'form-wrapper-sidebar': isOpenFromSidebar}">
+  <div *ngIf="firstStepVisible" class="form-step" id="step1">
+    <div class="app-form-logo-wrapper">
+      <img class="app-form-logo" src="assets/logo.png">
+    </div>
+
+    <h5 class="text-center font-slimm">Inregistrare</h5>
+    <div style="height: 10px;"></div>
+
+    <form [formGroup]="firstStepForm" autocomplete="off" (keydown)="keyDownFunctionOnForm($event)">
+
+      <mat-form-field class="split-form-control">
+        <input matInput placeholder="Prenume" [formControl]="firstName" autofocus >
+        <mat-error *ngIf="firstName.hasError('required')">
+          Prenumele este <strong>obligatoriu</strong>
+        </mat-error>
+        <mat-error *ngIf="firstName.hasError('maxlength')">
+          Maxim <strong>50 de caractere</strong> acceptate
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="split-form-control float-right">
+        <input matInput placeholder="Nume" [formControl]="lastName">
+        <mat-error *ngIf="lastName.hasError('required')">
+          Numele este <strong>obligatoriu</strong>
+        </mat-error>
+        <mat-error *ngIf="lastName.hasError('maxlength')">
+          Maxim <strong>50 de caractere</strong> acceptate
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="">
+        <input matInput
+          placeholder="Email"
+          autocomplete="off"
+          [formControl]="email">
+        <mat-error *ngIf="email.hasError('required')">
+          Email-ul este <strong>obligatoriu</strong>
+        </mat-error>
+        <mat-error *ngIf="email.hasError('pattern')">
+          Email-ul ales nu este unul valid
+        </mat-error>
+        <mat-error *ngIf="email.hasError('isEmailUnique')">
+          Email-ul este deja utilizat
+        </mat-error>
+        <mat-error *ngIf="email.hasError('maxlength')">
+          Email-ul trebuie sa aiba maxim <strong>256 de caractere</strong>
+        </mat-error>
+        <mat-spinner *ngIf="isEmailUniqueRequestLoading" class="field-loading-spinner">
+        </mat-spinner>
+        <fa-icon class="check-field-icon" [icon]="['fas', 'check-circle']"
+          *ngIf="!email.hasError('required') && !email.hasError('pattern') && !email.hasError('isEmailUnique') && !isEmailUniqueRequestLoading" [@fadeInOut] >
+        </fa-icon>
+      </mat-form-field>
+
+      <mat-form-field class="split-form-control">
+        <input matInput type="password" placeholder="Parola" [formControl]="password">
+        <mat-error *ngIf="password.hasError('required')">
+          Parola este <strong>obligatorie</strong>
+        </mat-error>
+        <mat-error *ngIf="password.hasError('maxlength')">
+          Maxim <strong>32 de caractere</strong> acceptate
+        </mat-error>
+        <mat-error *ngIf="password.hasError('minlength')">
+          Minim <strong>8 caractere</strong> acceptate
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="split-form-control float-right">
+        <input matInput type="password" placeholder="Confirma parola" [formControl]="confirmPassword">
+        <mat-error *ngIf="confirmPassword.hasError('required')">
+          Confirmarea parolei este <strong>obligatorie</strong>
+        </mat-error>
+        <mat-error *ngIf="confirmPassword.hasError('maxlength')">
+          Maxim <strong>32 de caractere</strong> acceptate
+        </mat-error>
+        <mat-error *ngIf="confirmPassword.hasError('minlength')">
+          Minim <strong>8 caractere</strong> acceptate
+        </mat-error>
+        <mat-error *ngIf="confirmPassword.hasError('matchpassword')">
+          Parola nu este confirmata
+        </mat-error>
+      </mat-form-field>
+      
+    </form>
+
+    <button type="submit" (click)="doFirstStep()" class="app-confirm-btn">
+      <span>Alatura-te comunitatii WeVeed</span>
+      <svg  class="svg-inline--fa fa-chevron-right fa-w-10 next-on-btn" aria-hidden="true" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path></svg>
+    </button>
+
+    <div style="height: 10px; text-align: right;"></div>
+
+    <div class="text-center font-13">
+      Ai deja un cont? <a href="javascript:void(0)" (click)="goToLogin()">Conecteaza-te</a>
+    </div>
+
+    <!-- <div style="height: 10px;"></div>
+    <div class="or-container">
+      <div class="or-left">
+        <hr class="or-hr">
+      </div>
+      <div class="or-middle">
+        sau
+      </div>
+      <div class="or-right">
+        <hr class="or-hr">
+      </div>
+    </div>
+    <div style="height: 10px;"></div>
+
+    <button [ladda]="isSubmittingFacebook" class="app-fb-btn" (click)="loginWithFB()">Conectare cu Facebook</button> -->
+  </div>
+
+  <div *ngIf="secondStepVisible" class="form-step" id="step2">
+    <svg (click)="backToStep1()" class="svg-inline--fa fa-chevron-left fa-w-10 back-arrow-form" aria-hidden="true" data-prefix="fas" data-icon="chevron-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"></path></svg>
+    <div class="app-form-logo-wrapper">
+      <img class="app-form-logo" src="assets/logo.png">
+    </div>
+    <div style="height: 20px;"></div>
+    
+    <mat-form-field class="" *ngIf="!isLoginWithFBChosen">
+      <input matInput 
+        placeholder="Email-ul ales"
+        autocomplete="off"
+        disabled
+        [value]="email.value">
+      <fa-icon class="check-field-icon" [icon]="['fas', 'check-circle']">
+      </fa-icon>
+    </mat-form-field>
+
+    <img *ngIf="facebookImage" [src]="facebookImage" class="register-fb-image">
+
+    <div *ngIf="isLoginWithFBChosen" style="font-size: 16px; text-align: center;">
+      Bine ai venit, {{facebookName}}!
+    </div>
+
+    <div style="height: 30px;"></div>
+    <h6 class="text-center">Selecteaza tipul contului</h6>
+    <div style="height: 20px;"></div>
+
+    <div class="user-type-option" (click)="doSecondStep('producer')">
+      <div class="user-type-icon-wrapper">
+          <fa-icon class="user-type-icon" [icon]="['fas', 'video']"></fa-icon>
+      </div>
+      <div class="user-type-text-wrapper">
+        <h5 class="text-center">Producator</h5>
+        <p class="text-center margin-bottom-0">Creez continut video de calitate</p>
+      </div>
+
+      <div class="user-type-select-icon-wrapper">
+        <svg  class="svg-inline--fa fa-chevron-right fa-w-10 user-type-select-icon" aria-hidden="true" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path></svg>
+      </div>
+    </div>
+
+    <div style="height: 20px;"></div>
+
+    <div class="user-type-option" (click)="doSecondStep('user')">
+      <div class="user-type-icon-wrapper">
+        <fa-icon class="user-type-icon" [icon]="['fas', 'users']"></fa-icon>
+      </div>
+      <div class="user-type-text-wrapper">
+        <h5 class="text-center">Utilizator</h5>
+        <p class="text-center margin-bottom-0">Doresc o experienta personalizata</p>
+      </div>
+      <div class="user-type-select-icon-wrapper">
+        <svg  class="svg-inline--fa fa-chevron-right fa-w-10 user-type-select-icon" aria-hidden="true" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path></svg>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="thirdStepVisible" class="form-step" id="step3">
+      <svg (click)="backToStep2()" class="svg-inline--fa fa-chevron-left fa-w-10 back-arrow-form" aria-hidden="true" data-prefix="fas" data-icon="chevron-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"></path></svg>
+      <div class="app-form-logo-wrapper">
+        <img class="app-form-logo" src="assets/logo.png">
+      </div>
+      <div style="height: 10px;"></div>
+      <p *ngIf="selectedUserType == 'user'">
+          Ca utilizator, iti vei personaliza experienta pe WeVeed. Vei putea urmari emisiuni 
+          si vei avea acces la un Canal personalizat dorintelor tale unde vor rula fara oprire ultimele episoadele din emisiunile care te intereseaza. 
+      </p>
+
+      <p *ngIf="selectedUserType == 'producer'">
+          Ca producător, vei putea încărca video-uri pe plaforma WeVeed, vei avea propriul profil de producător și, 
+          de asemenea, publicul iți va putea cauta și urmări creațiile.
+      </p>
+
+      <div style="height: 20px;"></div>
+      <div *ngIf="selectedUserType == 'producer'">
+          <h6 class="text-center">Alege un nume de producator</h6>
+          <form [formGroup]="secondStepForm" autocomplete="off" (keydown)="keyDownFunctionOnSecondForm($event)">
+              <mat-form-field class="">
+                <input matInput
+                  placeholder="Nume de producator"
+                  autocomplete="off" autofocus 
+                  [formControl]="producerName">
+                <mat-error *ngIf="producerName.hasError('required')">
+                  Numele de producator este <strong>obligatoriu</strong>
+                </mat-error>
+                <mat-error *ngIf="producerName.hasError('isProducerNameUnique')">
+                  Numele de producator este deja utilizat
+                </mat-error>
+                <mat-error *ngIf="producerName.hasError('maxlength')">
+                  Numele de producator trebuie sa aiba maxim <strong>50 de caractere</strong>
+                </mat-error>
+                <mat-spinner *ngIf="isProducerNameUniqueRequestLoading" class="field-loading-spinner">
+                </mat-spinner>
+                <fa-icon class="check-field-icon" [icon]="['fas', 'check-circle']"
+                  *ngIf="!producerName.hasError('required') && !producerName.hasError('maxlength') && !producerName.hasError('isProducerNameUnique') && !isProducerNameUniqueRequestLoading" [@fadeInOut] >
+                </fa-icon>
+              </mat-form-field>
+
+              <mat-checkbox class="example-margin" md-indeterminate="true"
+                [formControl]="acceptTerms">Accept Termenii si Conditiile <a href="javascript:void(0)" (click)="goToTermsAndConditions()">(vezi)</a>
+              </mat-checkbox>
+              <!-- <span *ngIf="acceptTerms.hasError('pattern')">Va rugam acceptati termenii si conditiile</span> -->
+              <div class="error-text" *ngIf="shouldAcceptTermsBeAcceptedForProducer && !acceptTerms.value">Va rugam acceptati termenii si conditiile</div>
+          </form>
+        <div style="height: 20px;"></div>
+      </div>
+      
+      <div *ngIf="selectedUserType == 'user'">
+          <mat-checkbox class="example-margin" md-indeterminate="true"
+            [(ngModel)]="acceptTermsForUser">Accept Termenii si Conditiile <a href="javascript:void(0)" (click)="goToTermsAndConditions()">(vezi)</a>
+          </mat-checkbox>
+          <div class="error-text" *ngIf="shouldAcceptTermsBeAcceptedForUser && !acceptTermsForUser">Va rugam acceptati termenii si conditiile</div>
+          <div style="height: 20px;"></div>
+      </div>
+      
+      <button [ladda]="isSubmitting" (click)="doThirdStep()" class="app-confirm-btn">
+        <span>Inregistrare</span>
+        <svg  class="svg-inline--fa fa-chevron-right fa-w-10 next-on-btn" aria-hidden="true" data-prefix="fas" data-icon="chevron-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"></path></svg>
+      </button>
+  </div>
+</div>
